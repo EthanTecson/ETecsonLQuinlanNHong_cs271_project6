@@ -24,7 +24,7 @@ class Vertex {
         vector<Vertex<Data, Key>*> edges;
         friend class Graph<Data, Key>;
         bool color_white;
-        Data parent; 
+        Vertex* parent; 
     public:
         Vertex();
         Vertex(Data d, Key k);
