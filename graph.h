@@ -22,9 +22,10 @@ class Vertex {
         Data data; 
         Key key;
         vector<Vertex<Data, Key>*> edges;
-        friend class Graph<Data, Key>;
         bool color_white;
         Vertex* parent; 
+        int distance;
+        friend class Graph<Data, Key>;
     public:
         Vertex();
         Vertex(Data d, Key k);
@@ -35,7 +36,9 @@ class Vertex {
 template <typename Data, typename Key>
 class Graph {
     private:
-        Vertex<Data, Key>* source;
+        vector<Vertex<Data,Key>>* vertices;
+        vector<vector<Vertex*>>* adjacentcies;
+
     public:
         Graph();
         Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges);
