@@ -91,14 +91,11 @@ Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>>
     for( int i = 0; i < len; i++ ) {
         Vertex<Data, Key> *new_vertex = new Vertex<Data, Key>(data[i], keys[i]);
         vertices.push_back(new_vertex);
-
-        Vertex<Data, Key> *new_ptr = vertices[i];
-        adjacencies[i].push_back(new_ptr);
     }
 
     for( int j = 0; j < len; j++ ) {
         int edges_len = edges[j].size();
-        for( int k = 1; k < edges_len; k++) {
+        for( int k = 0; k < edges_len; k++) {
             Vertex<Data, Key> *new_ptr = get(edges[j][k]);
             adjacencies[j].push_back(new_ptr);
         }
