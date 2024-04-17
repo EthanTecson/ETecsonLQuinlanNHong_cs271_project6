@@ -19,14 +19,15 @@ class Graph;
 template <typename Data, typename Key>
 class Vertex {
     private:
-        Data data; 
-        Key key;
-        //vector<Vertex<Data, Key>*> edges;
         bool color_white;
         Vertex* parent; 
         int distance;
         friend class Graph<Data, Key>;
+        
     public:
+        Data data; 
+        Key key;
+
         Vertex();
         Vertex(Data d, Key k);
         ~Vertex();
