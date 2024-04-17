@@ -21,7 +21,7 @@ class Vertex {
     private:
         Data data; 
         Key key;
-        vector<Vertex<Data, Key>*> edges;
+        //vector<Vertex<Data, Key>*> edges;
         bool color_white;
         Vertex* parent; 
         int distance;
@@ -36,8 +36,8 @@ class Vertex {
 template <typename Data, typename Key>
 class Graph {
     private:
-        vector<Vertex<Data,Key>>* vertices;
-        vector<vector<Vertex*>>* adjacentcies;
+        vector<Vertex<Data,Key>*> vertices;
+        vector<vector<Vertex<Data, Key>*>> adjacencies;
 
     public:
         Graph();
@@ -45,7 +45,7 @@ class Graph {
         ~Graph();
         Vertex<Data, Key>* get(Key k) const;
         bool reachable(Vertex<Data,Key>* u, Vertex<Data,Key>* v) const;
-        Node<Data, Key>* bfs(Vertex<Data,Key> source) const;
+        void bfs(Vertex<Data,Key> source) const;
         string print_path(Key u, Key v) const;
         string edge_class(Vertex<Data,Key> u, Vertex<Data,Key> v) const;
         string bfs_tree(Key s) const;

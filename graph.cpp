@@ -71,3 +71,67 @@ Vertex<Data, Key>::~Vertex() {
 // Graph Class
 //===================================
 
+/**
+ * @brief Parameter Constructor for Graph Class
+ *
+ * Creates graph object with parameter keys, data, and adjacencies
+ *
+ * @param keys vector, data vector, adjacencies vector of vectors
+ * 
+ * @note Pre-Condition: none
+ * @note Post-Condition: creates a Graph object
+ *
+ * @returns none
+ */
+template <typename Data, typename Key>
+Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges) {
+    int len = keys.size();
+    cout << "keys.size() = " << len << endl;
+    for( int i = 0; i < len; i++ ) {
+        cout << "YES\n";
+        cout << "keys[i] = " << keys[i] << endl;
+        cout << "data[i] = " << data[i] << endl;
+        Vertex<Data, Key> *new_vertex = new Vertex<Data, Key>(data[i], keys[i]);
+        cout << "YES2\n";
+        //Vertex<Data, Key> new_vertex = new Vertex<Data, Key>();
+        vertices.push_back(new_vertex);
+
+        Vertex<Data, Key> *new_ptr = vertices[i];
+        adjacencies[i].push_back(new_ptr);
+    }
+
+    for( int j = 0; j < len; j++ ) {
+        int edges_len = edges[j].size();
+        for( int k = 1; k < edges_len; k++) {
+            Vertex<Data, Key> *new_ptr = get(edges[j][k]);
+            adjacencies[j].push_back(new_ptr);
+        }
+    }
+}
+
+
+/**
+ * @brief get 
+ *
+ * returns the pointer to the vertex with key k
+ *
+ * @param key k
+ * 
+ * @note Pre-Condition: Graph is a valid graph object
+ * @note Post-Condition: no changes, but returns a pointer to the vertex with key k
+ *
+ * @returns none
+ */
+template <typename Data, typename Key>
+//typename Graph<Data, Key>::Vertex* Graph<Data, Key>::get(Key k) const{
+Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
+    int len = vertices.size();
+    //Vertex<Data, Key> *ret = nullptr;
+
+    for( int i = 0; i < len; i++ ) {
+        if ( vertices[i]->key == k )
+            return vertices[i];
+    }
+
+    return nullptr;
+}
