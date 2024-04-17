@@ -42,7 +42,7 @@ Graph<string, string> *generate_graph(string fname)
     Graph<string, string> *G = new Graph<string, string>(keys, data, adjs);
     return G;
 }
-/*
+
 void test_get(Graph<string, string> *G)
 {
     try
@@ -61,7 +61,7 @@ void test_get(Graph<string, string> *G)
         cerr << "Error getting vertex from graph : " << e.what() << endl;
     }
 }
-
+/*
 void test_reachable(Graph<string, string> *G)
 {
     try
@@ -185,14 +185,14 @@ int main()
 {
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
-    // test_get(G);
+    test_get(G);
     // test_reachable(G);
     // test_bfs(G);
     // test_print_path(G);
     // test_edge_class(G);
     // test_bfs_tree(G);
 
-    // cout << "Testing completed" << endl;
+    cout << "Testing completed" << endl;
 
     // delete G;
 

@@ -86,14 +86,10 @@ Vertex<Data, Key>::~Vertex() {
 template <typename Data, typename Key>
 Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges) {
     int len = keys.size();
-    cout << "keys.size() = " << len << endl;
+    adjacencies.resize(len);
+    
     for( int i = 0; i < len; i++ ) {
-        cout << "YES\n";
-        cout << "keys[i] = " << keys[i] << endl;
-        cout << "data[i] = " << data[i] << endl;
         Vertex<Data, Key> *new_vertex = new Vertex<Data, Key>(data[i], keys[i]);
-        cout << "YES2\n";
-        //Vertex<Data, Key> new_vertex = new Vertex<Data, Key>();
         vertices.push_back(new_vertex);
 
         Vertex<Data, Key> *new_ptr = vertices[i];
