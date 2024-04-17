@@ -43,7 +43,7 @@ template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(Data d, Key k){
     parent = nullptr;
     color_white = true;
-    distance - -1;
+    distance = -1;
     data = d;
     key = k;
 }
