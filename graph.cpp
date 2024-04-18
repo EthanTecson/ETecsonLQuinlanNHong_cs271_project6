@@ -4,6 +4,8 @@
 #include <queue>
 #include <stack>
 #include <queue>
+#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
 
@@ -220,4 +222,58 @@ void Graph<Data, Key>::bfs(Key source) const {
            u->color_white = false;
        }
    }
+}
+
+
+template <typename Data, typename Key>
+string Graph<Data, Key>::bfs_tree(Key s) const {
+  // Check if the starting vertex exists
+  if (get(s) == nullptr) {
+    return "Source vertex not found";
+  }
+
+  // Create a queue for BFS traversal
+  deque<Vertex<Data, Key>*> queue;
+  
+  // Create a visited set to avoid revisiting vertices
+  unordered_set<Key> visited;
+
+  // Add the source vertex to the queue and mark it visited
+  queue.push_back(get(s));
+  visited.insert(s);
+
+  // Level order traversal using a loop
+  string result;
+  while (!queue.empty()) 
+  {
+    // Initialize a string to store nodes in the current level
+    string current_level_str;
+    
+    // Process all nodes in the current level
+    while (!queue.empty())
+    {
+      Vertex<Data, Key>* vertex = queue.front();
+      queue.pop_front();
+
+      
+      // Add the vertex key to the current level string
+      current_level_str += (current_level_str.empty() ? "" : " ") + vertex->key;
+      cout << vertex->key << endl;
+    }
+    //   // Iterate through the adjacent vertices of the current vertex
+    //   for (auto neighbor : vertex->adjacencies_list) {
+    //     if (visited.count(neighbor->key) == 0) {  // Check if not visited
+    //       queue.push_back(neighbor);
+    //       visited.insert(neighbor->key);
+    //     }
+    //   }
+    // }
+    
+    // Append the current level string to the result, separated by a newline
+    if (!current_level_str.empty()) 
+    {
+        result += (result.empty() ? "" : "\n") + current_level_str;
+    }
+}
+    return result;
 }
