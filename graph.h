@@ -22,6 +22,8 @@ class Vertex {
         bool color_white;
         Vertex* parent; 
         int distance;
+        int d_time;
+        int f_time;
         friend class Graph<Data, Key>;
         
     public:
@@ -39,6 +41,8 @@ class Graph {
     private:
         vector<Vertex<Data,Key>*> vertices;
         vector<vector<Vertex<Data, Key>*>> adjacencies;
+        vector<vector<Key>> edges;
+
 
     public:
         Graph();
@@ -47,6 +51,7 @@ class Graph {
         Vertex<Data, Key>* get(Key k) const;
         bool reachable(Vertex<Data,Key>* u, Vertex<Data,Key>* v) const;
         void bfs(Vertex<Data,Key> source) const;
+        void dfs(Vertex<Data,Key> source) const;
         string print_path(Key u, Key v) const;
         string edge_class(Vertex<Data,Key> u, Vertex<Data,Key> v) const;
         string bfs_tree(Key s) const;
