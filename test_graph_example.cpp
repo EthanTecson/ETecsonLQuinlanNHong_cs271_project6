@@ -61,7 +61,7 @@ void test_get(Graph<string, string> *G)
         cerr << "Error getting vertex from graph : " << e.what() << endl;
     }
 }
-/*
+
 void test_reachable(Graph<string, string> *G)
 {
     try
@@ -106,88 +106,89 @@ void test_bfs(Graph<string, string> *G)
     }
 }
 
-void test_print_path(Graph<string, string> *G)
-{
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->print_path("T", "V");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "T -> S -> R -> V")
-        {
-            cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing print path : " << e.what() << endl;
-    }
-}
 
-void test_edge_class(Graph<string, string> *G)
-{
-    try
-    {
-        string e_class = G->edge_class("R", "V"); // tree edge
-        if (e_class != "tree edge")
-        {
-            cout << "Misidentified tree edge (\"R\", \"V\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("X", "U"); // back edge
-        if (e_class != "back edge")
-        {
-            cout << "Misidentified back edge (\"X\", \"U\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("R", "U"); // no edge
-        if (e_class != "no edge")
-        {
-            cout << "Misidentified non-existant edge (\"R\", \"U\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("T", "W"); // forward edge
-        if (e_class != "forward edge")
-        {
-            cout << "Misidentified forward edge (\"T\", \"W\") as : " << e_class << endl;
-        }
-        e_class = G->edge_class("T", "S"); // cross edge
-        if (e_class != "cross edge")
-        {
-            cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing edge class : " << e.what() << endl;
-    }
-}
+// void test_print_path(Graph<string, string> *G)
+// {
+//     try
+//     {
+//         stringstream buffer;
+//         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+//         G->print_path("T", "V");
+//         cout.rdbuf(prevbuf);
+//         if (buffer.str() != "T -> S -> R -> V")
+//         {
+//             cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
+//         }
+//     }
+//     catch (exception &e)
+//     {
+//         cerr << "Error testing print path : " << e.what() << endl;
+//     }
+// }
 
-void test_bfs_tree(Graph<string, string> *G)
-{
-    try
-    {
-        stringstream buffer;
-        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-        G->bfs_tree("T");
-        cout.rdbuf(prevbuf);
-        if (buffer.str() != "T\nS U W\nR Y X\nV")
-        {
-            cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
-                 << buffer.str() << endl;
-        }
-    }
-    catch (exception &e)
-    {
-        cerr << "Error testing bfs tree : " << e.what() << endl;
-    }
-}
-*/
+// void test_edge_class(Graph<string, string> *G)
+// {
+//     try
+//     {
+//         string e_class = G->edge_class("R", "V"); // tree edge
+//         if (e_class != "tree edge")
+//         {
+//             cout << "Misidentified tree edge (\"R\", \"V\") as : " << e_class << endl;
+//         }
+//         e_class = G->edge_class("X", "U"); // back edge
+//         if (e_class != "back edge")
+//         {
+//             cout << "Misidentified back edge (\"X\", \"U\") as : " << e_class << endl;
+//         }
+//         e_class = G->edge_class("R", "U"); // no edge
+//         if (e_class != "no edge")
+//         {
+//             cout << "Misidentified non-existant edge (\"R\", \"U\") as : " << e_class << endl;
+//         }
+//         e_class = G->edge_class("T", "W"); // forward edge
+//         if (e_class != "forward edge")
+//         {
+//             cout << "Misidentified forward edge (\"T\", \"W\") as : " << e_class << endl;
+//         }
+//         e_class = G->edge_class("T", "S"); // cross edge
+//         if (e_class != "cross edge")
+//         {
+//             cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
+//         }
+//     }
+//     catch (exception &e)
+//     {
+//         cerr << "Error testing edge class : " << e.what() << endl;
+//     }
+// }
+
+// void test_bfs_tree(Graph<string, string> *G)
+// {
+//     try
+//     {
+//         stringstream buffer;
+//         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+//         G->bfs_tree("T");
+//         cout.rdbuf(prevbuf);
+//         if (buffer.str() != "T\nS U W\nR Y X\nV")
+//         {
+//             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
+//                  << buffer.str() << endl;
+//         }
+//     }
+//     catch (exception &e)
+//     {
+//         cerr << "Error testing bfs tree : " << e.what() << endl;
+//     }
+// }
+
 int main()
 {
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
     test_get(G);
-    // test_reachable(G);
-    // test_bfs(G);
+    test_reachable(G);
+    test_bfs(G);
     // test_print_path(G);
     // test_edge_class(G);
     // test_bfs_tree(G);
