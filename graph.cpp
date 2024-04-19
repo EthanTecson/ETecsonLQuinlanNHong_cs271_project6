@@ -221,14 +221,18 @@ template<typename Data, typename Key>
 void Graph<Data, Key>::print_path(Key u, Key v) const{
 
     // Check if vertex keys are in graph
-    int check_counter = 0;
-    for ( int i = 0; i < vertices.size(); i++ ){
-        if (vertices[i]->key == u){
-            check_counter++;
-        }
-        if (vertices[i]->key == v){
-            check_counter++;
-        }
+    // int check_counter = 0;
+    // for ( int i = 0; i < vertices.size(); i++ ){
+    //     if (vertices[i]->key == u){
+    //         check_counter++;
+    //     }
+    //     if (vertices[i]->key == v){
+    //         check_counter++;
+    //     }
+    // }
+
+    if (!reachable(u,v)){
+        return;
     }
 
     stringstream ss;
@@ -261,24 +265,26 @@ void Graph<Data, Key>::print_path(Key u, Key v) const{
     // change ss into string and check if u and v are in ss string
     string result = ss.str();
 
-    stringstream u_stringstring;
-    stringstream v_stringstring;
+    cout << result;
 
-    u_stringstring << u;
-    v_stringstring << v;
+    // stringstream u_stringstring;
+    // stringstream v_stringstring;
 
-    string u_result = u_stringstring.str();
-    string v_result = v_stringstring.str();
+    // u_stringstring << u;
+    // v_stringstring << v;
 
-    if (result.find(u_result) == string::npos) {
-        cout << "";
-    }
-    else if (result.find(v_result) == string::npos) {
-        cout << "";
-    }
-    else {
-        cout << result;
-    }
+    // string u_result = u_stringstring.str();
+    // string v_result = v_stringstring.str();
+
+    // if (result.find(u_result) == string::npos) {
+    //     cout << "";
+    // }
+    // else if (result.find(v_result) == string::npos) {
+    //     cout << "";
+    // }
+    // else {
+    //     cout << result;
+    // }
 
     return;
 }
