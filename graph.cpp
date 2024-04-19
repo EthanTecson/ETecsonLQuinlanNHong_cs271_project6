@@ -1,17 +1,17 @@
 #include "graph.h"
 #include <sstream>
+#include <string>
 #include <queue>
 #include <stack>
 
+using namespace std;
 
 //===================================
 // Vertex Class
 //===================================
 
 
-
-
-/**
+/*
 * @brief Empty Constructor for Vertex Class
 *
 * Creates a Vertex Object with no values for key or data
@@ -23,6 +23,8 @@
 *
 * @returns none
 */
+
+
 template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(){
    parent = nullptr;
