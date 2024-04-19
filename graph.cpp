@@ -1,7 +1,11 @@
 #include "graph.h"
 #include <sstream>
+#include <string>
 #include <queue>
+#include <stack>
+#include <unordered_set>
 
+using namespace std;
 
 //===================================
 // Vertex Class
@@ -9,19 +13,20 @@
 
 
 
-
-/**
-* @brief Empty Constructor for Vertex Class
-*
-* Creates a Vertex Object with no values for key or data
-*
-* @param none
-*
-* @note Pre-Condition: none
-* @note Post-Condition: Creates a Node object
-*
-* @returns none
+/*
+ * @brief Empty Constructor for Vertex Class
+ *
+ * Creates a Vertex Object with no values for key or data
+ *
+ * @param none
+ *
+ * @note Pre-Condition: none
+ * @note Post-Condition: Creates a Node object
+ *
+ * @returns none
 */
+
+
 template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(){
    parent = nullptr;
