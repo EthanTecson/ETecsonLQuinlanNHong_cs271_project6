@@ -162,25 +162,25 @@ void test_edge_class(Graph<string, string> *G)
     }
 }
 
-// void test_bfs_tree(Graph<string, string> *G)
-// {
-//     try
-//     {
-//         stringstream buffer;
-//         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-//         G->bfs_tree("T");
-//         cout.rdbuf(prevbuf);
-//         if (buffer.str() != "T\nS U W\nR Y X\nV")
-//         {
-//             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
-//                  << buffer.str() << endl;
-//         }
-//     }
-//     catch (exception &e)
-//     {
-//         cerr << "Error testing bfs tree : " << e.what() << endl;
-//     }
-// }
+void test_bfs_tree(Graph<string, string> *G)
+{
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->bfs_tree("T");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "T\nS U W\nR Y X\nV")
+        {
+            cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
+                 << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing bfs tree : " << e.what() << endl;
+    }
+}
 
 int main()
 {
@@ -190,8 +190,8 @@ int main()
     test_reachable(G);
     test_bfs(G);
     // test_print_path(G);
-    test_edge_class(G);
-    // test_bfs_tree(G);
+    //test_edge_class(G);
+    test_bfs_tree(G);
 
     cout << "Testing completed" << endl;
 

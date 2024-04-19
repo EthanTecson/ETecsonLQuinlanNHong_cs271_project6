@@ -446,3 +446,61 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
 
     return ret;
 }
+
+template <typename Data, typename Key>
+string Graph<Data, Key>::bfs_tree(Key s) const {
+    // Check if the starting vertex exists
+    if (get(s) == nullptr) {
+        return "Source vertex not found";
+    }
+
+    // Create a queue for BFS traversal
+    deque<Vertex<Data, Key>*> q;
+
+    // Create a set to keep track of visited vertices
+    unordered_set<Key> visited;
+
+    // Initialize a stringstream to store the result
+    stringstream result;
+
+    // Add the source vertex to the queue and mark it visited
+    q.push_back(get(s));
+    visited.insert(s);
+
+    // Traverse BFS
+    while (!q.empty()) {
+        // Get the number of vertices in the current level
+        int level_size = q.size();
+
+        // Initialize a stringstream to store vertices in the current level
+        stringstream current_level_str;
+
+        // Process all vertices in the current level
+        for (int i = 0; i < level_size; i++) {
+            // Get the front vertex from the queue
+            Vertex<Data, Key>* vertex = q.front();
+            q.pop_front();
+
+            // Append the key of the vertex to the current level string
+            current_level_str << (current_level_str.tellp() == 0 ? "" : " ") << vertex->key;
+
+            // Visit all adjacent vertices of the current vertex
+            for (auto neighbor : vertex->adjacencies_list) {
+                // Check if the neighbor vertex has not been visited
+                if (visited.count(neighbor->key) == 0) {
+                    // Mark the neighbor vertex as visited and add it to the queue
+                    q.push_back(neighbor);
+                    visited.insert(neighbor->key);
+                }
+            }
+        }
+
+        // Append the current level string to the result
+        result << current_level_str.str() << "\n";
+    }
+
+    // Convert the stringstream to a string and return
+    cout << result.str() << endl;
+    return result.str();
+}
+ 
