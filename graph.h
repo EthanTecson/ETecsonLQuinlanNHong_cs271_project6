@@ -55,7 +55,7 @@ class Graph {
        Vertex<Data, Key>* get(Key k) const;
        bool reachable(Key u, Key v) const;
        void bfs(Key source) const;
-       string print_path(Key u, Key v) const;
+       void print_path(Key u, Key v) const;
        string edge_class(Vertex<Data,Key> u, Vertex<Data,Key> v) const;
        string bfs_tree(Key s) const;
 };

@@ -107,24 +107,24 @@ void test_bfs(Graph<string, string> *G)
 }
 
 
-// void test_print_path(Graph<string, string> *G)
-// {
-//     try
-//     {
-//         stringstream buffer;
-//         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
-//         G->print_path("T", "V");
-//         cout.rdbuf(prevbuf);
-//         if (buffer.str() != "T -> S -> R -> V")
-//         {
-//             cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
-//         }
-//     }
-//     catch (exception &e)
-//     {
-//         cerr << "Error testing print path : " << e.what() << endl;
-//     }
-// }
+void test_print_path(Graph<string, string> *G)
+{
+    try
+    {
+        stringstream buffer;
+        streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
+        G->print_path("T", "V");
+        cout.rdbuf(prevbuf);
+        if (buffer.str() != "T -> S -> R -> V")
+        {
+            cout << "Incorrect path from vertex \"T\" to vertex \"V\". Expected: T -> S -> R -> V but got : " << buffer.str() << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing print path : " << e.what() << endl;
+    }
+}
 
 // void test_edge_class(Graph<string, string> *G)
 // {
@@ -189,7 +189,7 @@ int main()
     test_get(G);
     test_reachable(G);
     test_bfs(G);
-    // test_print_path(G);
+    test_print_path(G);
     // test_edge_class(G);
     // test_bfs_tree(G);
 

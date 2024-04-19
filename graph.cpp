@@ -1,6 +1,7 @@
 #include "graph.h"
 #include <sstream>
 #include <queue>
+#include <stack>
 
 
 //===================================
@@ -18,7 +19,7 @@
 * @param none
 *
 * @note Pre-Condition: none
-* @note Post-Condition: Creates a Node object
+* @note Post-Condition: Creates a Vertex object
 *
 * @returns none
 */
@@ -71,7 +72,7 @@ Vertex<Data,Key>::Vertex(Data d, Key k){
 template <typename Data, typename Key>
 Vertex<Data, Key>::~Vertex() {
    // Nothing needed
-   // Will probably need to have a heper function that deletes nodes that
+   // Will probably need to have a heper function that deletes Vertices that
    // will be used in the Graph deconstructor
 }
 
@@ -159,8 +160,8 @@ Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
 * Determines whether or not the vertex with key "v" is reachable 
 * from the vertex of key "u"
 *
-* @param u - the key of the starting node of reachability
-* @param v - the key of the node to be checked if reachable from u 
+* @param u - the key of the starting vertex of reachability
+* @param v - the key of the vertes to be checked if reachable from u 
 *
 * @note Pre-Condition: Graph is a valid graph object with valid Vertex objects
 * @note Post-Condition: none
@@ -185,13 +186,13 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
         return false;
     }
 
-    // Give all nodes reachable from u a distance
+    // Give all vertexes reachable from u a distance other than -1
     bfs(u);
 
-    // Get node that will be checked if reachable
+    // Get vertex that will be checked if reachable
     Vertex<Data, Key> *v_ptr = get(v);
 
-    // If node to be reached has no set distance, it is not reachable from u
+    // If vertex to be reached has no set distance, it is not reachable from u
     if ( v_ptr->distance == -1 ){
         return false;
     }
@@ -201,31 +202,84 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
 }
 
 
-// Function is not finished at time of push
+/**
+* @brief print_path
+*
+* Prints the shortest path between the vertex with key 'u' and key 'v'
+*
+* @param u - Starting vertex to print path
+* @param v - Last vertex to print path
+*
+* @note Pre-Condition: u and v are of valid Key data types
+* @note Post-Condition: none
+*
+* @returns A string show the shortest path between vertex with key 'u' and key 'v'
+*/
+template<typename Data, typename Key>
+void Graph<Data, Key>::print_path(Key u, Key v) const{
 
-// template<typename Data, typename Key>
-// string Graph<Data, Key>::print_path(Key u, Key v) const{
+    // Check if vertex keys are in graph
+    int check_counter = 0;
+    for ( int i = 0; i < vertices.size(); i++ ){
+        if (vertices[i]->key == u){
+            check_counter++;
+        }
+        if (vertices[i]->key == v){
+            check_counter++;
+        }
+    }
 
-//     // Check if vertex keys are in graph
-//     int check_counter = 0;
-//     for ( int i = 0; i < vertices.size(); i++ ){
-//         if (vertices[i]->key == u){
-//             check_counter++;
-//         }
-//         if (vertices[i]->key == v){
-//             check_counter++;
-//         }
-//     }
+    stringstream ss;
 
-//     stringstream ss;
+    // Need to reference nodes of given keys
+    Vertex<Data,Key>* u_ptr = get(u);
+    Vertex<Data,Key>* v_ptr = get(v);
 
-//     Vertex<Data,Key>* u_ptr = get(u);
-//     Vertex<Data,Key>* v_ptr = get(v);
+    // Get all vertices parents
+    bfs(u);
 
-//     if (u == v){
-//         ss << 
-//     }
-// }
+    stack<Vertex<Data,Key>*> vertexStack;
+
+    // Get path
+    while (v_ptr != nullptr){
+        vertexStack.push(v_ptr);
+        v_ptr = v_ptr->parent;
+    }
+    while (!vertexStack.empty()){
+        Vertex<Data,Key> *topVertex = vertexStack.top();
+        ss << topVertex->key;
+        vertexStack.pop();
+
+        // If item in stack is not the last item, use arrow
+        if (!vertexStack.empty()){
+            ss << " -> ";
+        }
+    }
+
+    // change ss into string and check if u and v are in ss string
+    string result = ss.str();
+
+    stringstream u_stringstring;
+    stringstream v_stringstring;
+
+    u_stringstring << u;
+    v_stringstring << v;
+
+    string u_result = u_stringstring.str();
+    string v_result = v_stringstring.str();
+
+    if (result.find(u_result) == string::npos) {
+        cout << "";
+    }
+    else if (result.find(v_result) == string::npos) {
+        cout << "";
+    }
+    else {
+        cout << result;
+    }
+
+    return;
+}
 
 
 
