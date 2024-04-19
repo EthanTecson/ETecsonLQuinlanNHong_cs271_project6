@@ -153,6 +153,81 @@ Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
    return nullptr;
 }
 
+/**
+* @brief reachable
+*
+* Determines whether or not the vertex with key "v" is reachable 
+* from the vertex of key "u"
+*
+* @param u - the key of the starting node of reachability
+* @param v - the key of the node to be checked if reachable from u 
+*
+* @note Pre-Condition: Graph is a valid graph object with valid Vertex objects
+* @note Post-Condition: none
+*
+* @returns True or False depending on if v is reachable from u
+*/
+template <typename Data, typename Key>
+bool Graph<Data,Key>::reachable(Key u, Key v) const{
+
+    // Check if vertex keys are in graph
+    int check_counter = 0;
+    for ( int i = 0; i < vertices.size(); i++ ){
+        if (vertices[i]->key == u){
+            check_counter++;
+        }
+        if (vertices[i]->key == v){
+            check_counter++;
+        }
+    }
+
+    if ( check_counter != 2 ){
+        return false;
+    }
+
+    // Give all nodes reachable from u a distance
+    bfs(u);
+
+    // Get node that will be checked if reachable
+    Vertex<Data, Key> *v_ptr = get(v);
+
+    // If node to be reached has no set distance, it is not reachable from u
+    if ( v_ptr->distance == -1 ){
+        return false;
+    }
+
+    return true;
+
+}
+
+
+// Function is not finished at time of push
+
+// template<typename Data, typename Key>
+// string Graph<Data, Key>::print_path(Key u, Key v) const{
+
+//     // Check if vertex keys are in graph
+//     int check_counter = 0;
+//     for ( int i = 0; i < vertices.size(); i++ ){
+//         if (vertices[i]->key == u){
+//             check_counter++;
+//         }
+//         if (vertices[i]->key == v){
+//             check_counter++;
+//         }
+//     }
+
+//     stringstream ss;
+
+//     Vertex<Data,Key>* u_ptr = get(u);
+//     Vertex<Data,Key>* v_ptr = get(v);
+
+//     if (u == v){
+//         ss << 
+//     }
+// }
+
+
 
 /**
 * @brief bfs
@@ -161,16 +236,13 @@ Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
 *
 * @param source s, of type Key
 *
-* @note Pre-Condition: none
+* @note Pre-Condition: source is the key of a valid Vertex<Data,Key> object
 * @note Post-Condition: performs a bfs on the graph
 *
 * @returns none, but changes the attributes of the vertices
 */
-
-
 template <typename Data, typename Key>
 void Graph<Data, Key>::bfs(Key source) const {
-
 
    int len = vertices.size();
    for( int i = 0; i < len; i++ ) {

@@ -62,28 +62,28 @@ void test_get(Graph<string, string> *G)
     }
 }
 
-// void test_reachable(Graph<string, string> *G)
-// {
-//     try
-//     {
-//         if (!G->reachable("R", "V"))
-//         {
-//             cout << "Incorrectly identified adjacent vertex \"V\" as unreachable from \"R\"" << endl;
-//         }
-//         if (!G->reachable("X", "W"))
-//         {
-//             cout << "Incorrectly identified \"W\" as unreachable from \"X\"" << endl;
-//         }
-//         if (G->reachable("S", "A"))
-//         {
-//             cout << "Incorrectly identified non-existant vetex \"A\" as reachable from \"S\"" << endl;
-//         }
-//     }
-//     catch (exception &e)
-//     {
-//         cerr << "Error testing reachable : " << e.what() << endl;
-//     }
-// }
+void test_reachable(Graph<string, string> *G)
+{
+    try
+    {
+        if (!G->reachable("R", "V"))
+        {
+            cout << "Incorrectly identified adjacent vertex \"V\" as unreachable from \"R\"" << endl;
+        }
+        if (!G->reachable("X", "W"))
+        {
+            cout << "Incorrectly identified \"W\" as unreachable from \"X\"" << endl;
+        }
+        if (G->reachable("S", "A"))
+        {
+            cout << "Incorrectly identified non-existant vetex \"A\" as reachable from \"S\"" << endl;
+        }
+    }
+    catch (exception &e)
+    {
+        cerr << "Error testing reachable : " << e.what() << endl;
+    }
+}
 
 void test_bfs(Graph<string, string> *G)
 {
@@ -187,7 +187,7 @@ int main()
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
     test_get(G);
-    // test_reachable(G);
+    test_reachable(G);
     test_bfs(G);
     // test_print_path(G);
     // test_edge_class(G);

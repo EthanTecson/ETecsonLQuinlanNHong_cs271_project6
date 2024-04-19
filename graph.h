@@ -53,7 +53,7 @@ class Graph {
        Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges);
        ~Graph();
        Vertex<Data, Key>* get(Key k) const;
-       bool reachable(Vertex<Data,Key>* u, Vertex<Data,Key>* v) const;
+       bool reachable(Key u, Key v) const;
        void bfs(Key source) const;
        string print_path(Key u, Key v) const;
        string edge_class(Vertex<Data,Key> u, Vertex<Data,Key> v) const;
