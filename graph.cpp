@@ -7,6 +7,9 @@
 
 using namespace std;
 
+
+static int time_var;
+
 //===================================
 // Vertex Class
 //===================================
@@ -292,4 +295,154 @@ void Graph<Data, Key>::bfs(Key source) const {
            u->color_white = false;
        }
    }
+}
+
+
+/**
+* @brief dfs
+*
+* performs a depth-first search on the graph, starting at source s
+*
+* @param source s, of type Key
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: performs dfs on graph
+*
+* @returns none, but changes the attributes of the vertices
+*/
+// template <typename Data, typename Key>
+// void Graph<Data, Key>::dfs() const {
+//     int len = vertices.size();
+//     for( int i = 0; i < len; i++ ) {
+//         vertices[i]->color = 0;
+//         vertices[i]->parent = nullptr;
+//     }
+
+//     time_var = 0;
+
+//     for( int j = 0; j < len; j++ ) {
+//         if( vertices[j]->color == 0 )
+//             dfs_visit( vertices[j] );
+//     }
+// }
+
+
+/**
+* @brief dfs-visit
+*
+* helper function for dfs
+*
+* @param Vertex u
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: 
+*
+* @returns none, but changes the attributes of the vertices
+*/
+template <typename Data, typename Key>
+void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
+    time_var = time_var + 1;
+    u->discovered = time_var;
+    u->color = 1;
+    int len = u->adjacencies_list.size();
+    
+    for( int i = 0; i < len; i++ ) {
+        if( u->adjacencies_list[i]->color == 0) {
+            u->adjacencies_list[i]->parent = u;
+            dfs_visit( u->adjacencies_list[i] );
+        }
+    }
+
+    u->color = 1;
+    time_var = time_var + 1;
+    u->finished = time_var;
+}
+
+
+
+
+
+
+/**
+* @brief edge_class
+*
+* 
+*
+* @param 
+*
+* @note Pre-Condition: 
+* @note Post-Condition: 
+*
+* @returns 
+*/
+template <typename Data, typename Key>
+string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
+    Vertex<Data,Key> *u = get( u_key );
+    Vertex<Data,Key> *v = get( v_key );
+
+    int len = vertices.size();
+    string ret = "no edge";
+
+    for( int i = 0; i < len; i++ ) {
+        vertices[i]->color = 0;
+        vertices[i]->parent = nullptr;
+    }
+
+    time_var = 0;
+
+    for( int j = 0; j < len; j++ ) {
+        if( vertices[j]->color == 0 && vertices[j] == u ) {
+            ret = edge_class_helper( u, v, ret );
+        }
+        else if( vertices[j]->color == 0 ) {
+            dfs_visit( vertices[j] );
+        }
+    }
+
+    return ret;
+}
+
+
+/**
+* @brief edge_class_helper
+*
+* helper function for edge_class
+*
+* @param Vertex u
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: 
+*
+* @returns none, but changes the attributes of the vertices
+*/
+template <typename Data, typename Key>
+string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const {
+    time_var = time_var + 1;
+    u->discovered = time_var;
+    u->color = 1;
+    int len = u->adjacencies_list.size();
+    
+    for( int i = 0; i < len; i++ ) {
+        if( u->adjacencies_list[i]->color == 1 )
+            return "back edge";
+        else if( u->adjacencies_list[i]->color == 2 ){
+            if( u->distance > u->adjacencies_list[i]->distance )
+                return "forward edge";
+            else 
+                return "cross edge";
+        }
+        else if( u->adjacencies_list[i]->color == 0 && u->adjacencies_list[i] == v ) {
+            return "tree edge";
+        }
+        else if ( u->adjacencies_list[i]->color == 0 ) {
+            u->adjacencies_list[i]->parent = u;
+            dfs_visit( u->adjacencies_list[i] );
+        }
+    }
+
+    u->color = 1;
+    time_var = time_var + 1;
+    u->finished = time_var;
+
+    return ret;
 }

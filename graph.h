@@ -27,6 +27,11 @@ class Vertex {
        Vertex<Data, Key>* parent;
        vector<Vertex<Data, Key>*> adjacencies_list;
        friend class Graph<Data, Key>;
+       
+    //    int time_var;
+       int color; // 0 = white, 1 = gray, 2 = black
+       int discovered;
+       int finished;
       
    public:
        Data data;
@@ -56,8 +61,13 @@ class Graph {
        bool reachable(Key u, Key v) const;
        void bfs(Key source) const;
        string print_path(Key u, Key v) const;
-       string edge_class(Vertex<Data,Key> u, Vertex<Data,Key> v) const;
        string bfs_tree(Key s) const;
+
+    //    void dfs() const;
+       void dfs_visit( Vertex<Data,Key> *u ) const; 
+
+       string edge_class(Key u_key, Key v_key) const;
+       string edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const;
 };
 
 
