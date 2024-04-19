@@ -84,7 +84,7 @@ void test_reachable(Graph<string, string> *G)
         cerr << "Error testing reachable : " << e.what() << endl;
     }
 }
-
+*/
 void test_bfs(Graph<string, string> *G)
 {
     try
@@ -105,7 +105,7 @@ void test_bfs(Graph<string, string> *G)
         cerr << "Error testing bfs : " << e.what() << endl;
     }
 }
-
+/*
 void test_print_path(Graph<string, string> *G)
 {
     try
@@ -160,7 +160,7 @@ void test_edge_class(Graph<string, string> *G)
         cerr << "Error testing edge class : " << e.what() << endl;
     }
 }
-
+*/
 void test_bfs_tree(Graph<string, string> *G)
 {
     try
@@ -180,17 +180,17 @@ void test_bfs_tree(Graph<string, string> *G)
         cerr << "Error testing bfs tree : " << e.what() << endl;
     }
 }
-*/
+
 int main()
 {
 
     Graph<string, string> *G = generate_graph("graph_description.txt");
     test_get(G);
     // test_reachable(G);
-    // test_bfs(G);
+    test_bfs(G);
     // test_print_path(G);
     // test_edge_class(G);
-    // test_bfs_tree(G);
+    test_bfs_tree(G);
 
     cout << "Testing completed" << endl;
 

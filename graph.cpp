@@ -224,56 +224,59 @@ void Graph<Data, Key>::bfs(Key source) const {
    }
 }
 
-
 template <typename Data, typename Key>
 string Graph<Data, Key>::bfs_tree(Key s) const {
-  // Check if the starting vertex exists
-  if (get(s) == nullptr) {
-    return "Source vertex not found";
-  }
-
-  // Create a queue for BFS traversal
-  deque<Vertex<Data, Key>*> queue;
-  
-  // Create a visited set to avoid revisiting vertices
-  unordered_set<Key> visited;
-
-  // Add the source vertex to the queue and mark it visited
-  queue.push_back(get(s));
-  visited.insert(s);
-
-  // Level order traversal using a loop
-  string result;
-  while (!queue.empty()) 
-  {
-    // Initialize a string to store nodes in the current level
-    string current_level_str;
-    
-    // Process all nodes in the current level
-    while (!queue.empty())
-    {
-      Vertex<Data, Key>* vertex = queue.front();
-      queue.pop_front();
-
-      
-      // Add the vertex key to the current level string
-      current_level_str += (current_level_str.empty() ? "" : " ") + vertex->key;
-      cout << vertex->key << endl;
+    // Check if the starting vertex exists
+    if (get(s) == nullptr) {
+        return "Source vertex not found";
     }
-    //   // Iterate through the adjacent vertices of the current vertex
-    //   for (auto neighbor : vertex->adjacencies_list) {
-    //     if (visited.count(neighbor->key) == 0) {  // Check if not visited
-    //       queue.push_back(neighbor);
-    //       visited.insert(neighbor->key);
-    //     }
-    //   }
-    // }
-    
-    // Append the current level string to the result, separated by a newline
-    if (!current_level_str.empty()) 
-    {
-        result += (result.empty() ? "" : "\n") + current_level_str;
+
+    // Create a queue for BFS traversal
+    deque<Vertex<Data, Key>*> q;
+
+    // Create a set to keep track of visited vertices
+    unordered_set<Key> visited;
+
+    // Initialize a stringstream to store the result
+    stringstream result;
+
+    // Add the source vertex to the queue and mark it visited
+    q.push_back(get(s));
+    visited.insert(s);
+
+    // Traverse BFS
+    while (!q.empty()) {
+        // Get the number of vertices in the current level
+        int level_size = q.size();
+
+        // Initialize a stringstream to store vertices in the current level
+        stringstream current_level_str;
+
+        // Process all vertices in the current level
+        for (int i = 0; i < level_size; i++) {
+            // Get the front vertex from the queue
+            Vertex<Data, Key>* vertex = q.front();
+            q.pop_front();
+
+            // Append the key of the vertex to the current level string
+            current_level_str << (current_level_str.tellp() == 0 ? "" : " ") << vertex->key;
+
+            // Visit all adjacent vertices of the current vertex
+            for (auto neighbor : vertex->adjacencies_list) {
+                // Check if the neighbor vertex has not been visited
+                if (visited.count(neighbor->key) == 0) {
+                    // Mark the neighbor vertex as visited and add it to the queue
+                    q.push_back(neighbor);
+                    visited.insert(neighbor->key);
+                }
+            }
+        }
+
+        // Append the current level string to the result
+        result << current_level_str.str() << "\n";
     }
-}
-    return result;
+
+    // Convert the stringstream to a string and return
+    cout << result.str() << endl;
+    return result.str();
 }
