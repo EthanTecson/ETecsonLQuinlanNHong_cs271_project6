@@ -1,3 +1,4 @@
+
 //-----------------------------------------------//
 //                    Graph                      //
 //                 Header File                   //
@@ -61,5 +62,5 @@ class Graph {
        string edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const;
 };
 
-
 #endif
+

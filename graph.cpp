@@ -147,6 +147,23 @@ Graph<Data, Key>::~Graph() {
 }
 
 
+/**
+* @brief Deconstructor for Graph Class
+*
+* Deallocates memory created for Graph objects
+*
+*@param none
+*
+* @note Pre-Condition: none
+* @note Post-Condition: Memory for Graph objects deallocated
+*
+* @returns none
+*/
+template <typename Data, typename Key>
+Graph<Data, Key>::~Graph() {
+    // Nothing needed.
+}
+
 
 /**
 * @brief get
@@ -416,6 +433,7 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
     cout << result.str();
     return;
 }
+
 
 /**
 * @brief edge_class
