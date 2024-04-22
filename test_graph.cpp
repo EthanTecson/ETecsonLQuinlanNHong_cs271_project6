@@ -438,6 +438,26 @@ void test_edge_class(Graph<string, string> *G)
         {
             cout << "Misidentified forward edge (\"T\", \"S\") as : " << e_class << endl;
         }
+        e_class = G->edge_class("V", "S"); // edge (V, S)
+        if (e_class != "back edge")
+        {
+            cout << "Misidentified back edge (\"V\", \"S\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("T", "U"); // edge (T, U)
+        if (e_class != "tree edge")
+        {
+            cout << "Misidentified tree edge (\"T\", \"U\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("Y", "W"); // edge (Y, W)
+        if (e_class != "back edge")
+        {
+            cout << "Misidentified back edge (\"Y\", \"W\") as : " << e_class << endl;
+        }
+        e_class = G->edge_class("W", "X"); // edge (W, X)
+        if (e_class != "back edge")
+        {
+            cout << "Misidentified back edge (\"W\", \"X\") as : " << e_class << endl;
+        }
     }
     catch (exception &e)
     {
