@@ -83,8 +83,6 @@ Vertex<Data,Key>::Vertex(Data d, Key k){
 template <typename Data, typename Key>
 Vertex<Data, Key>::~Vertex() {
    // Nothing needed
-   // Will probably need to have a heper function that deletes Vertices that
-   // will be used in the Graph deconstructor
 }
 
 
@@ -145,25 +143,6 @@ Graph<Data, Key>::~Graph() {
         delete vertices[i];
     }
 }
-
-
-/**
-* @brief Deconstructor for Graph Class
-*
-* Deallocates memory created for Graph objects
-*
-*@param none
-*
-* @note Pre-Condition: none
-* @note Post-Condition: Memory for Graph objects deallocated
-*
-* @returns none
-*/
-template <typename Data, typename Key>
-Graph<Data, Key>::~Graph() {
-    // Nothing needed.
-}
-
 
 /**
 * @brief get
