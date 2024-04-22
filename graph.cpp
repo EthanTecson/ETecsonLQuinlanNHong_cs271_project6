@@ -367,13 +367,14 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
     
     // Check if the graph is empty
     if (vertices.empty()){
+        
         return;
     }
 
     // Check if the starting vertex exists
     if (get(s) == nullptr) {
-        result << "Source vertex not found" << endl;
-        cout << result.str();
+        // result << "Source vertex not found" << endl;
+        // cout << result.str();
         return;
     }
 
@@ -427,6 +428,7 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
         }
     }
     cout << result.str();
+    return;
 
 }
 

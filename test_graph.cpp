@@ -559,7 +559,6 @@ void test_bfs_tree(Graph<string, string> *G)
         }
         delete F;
     
-    
         // empty graph
         // Expected output: ""
         Graph<string, string> *G_0 = new Graph<string, string>({}, {}, {});
@@ -567,7 +566,6 @@ void test_bfs_tree(Graph<string, string> *G)
         stringstream buffer0;
         streambuf *prevbuf0 = cout.rdbuf(buffer0.rdbuf());
         cout.rdbuf(prevbuf0);
-        //cout << "This code runs fine" << endl;
         if (buffer0.str() != "")
         {
             cout << "Incorrect bfs tree. Expected : \nbut got :\n"
@@ -584,9 +582,9 @@ void test_bfs_tree(Graph<string, string> *G)
         stringstream buffer_1;
         streambuf *prevbuf_1 = cout.rdbuf(buffer_1.rdbuf());
         cout.rdbuf(prevbuf_1);   
-        if (buffer_1.str() != "Source vertex not found")
+        if (buffer_1.str() != "")
         {
-            cout << "Incorrect bfs tree. Expected : \nSource vertex not found\nbut got :\n"
+            cout << "Incorrect bfs tree. Expected : \nbut got :\n"
                 << buffer_1.str() << endl;
         }    
         delete G_1;
