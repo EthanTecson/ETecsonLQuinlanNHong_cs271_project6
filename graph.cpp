@@ -107,6 +107,11 @@ Vertex<Data, Key>::~Vertex() {
 */
 template <typename Data, typename Key>
 Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges) {
+
+    if (keys.size() != data.size() || keys.size() != edges.size() ){
+        throw invalid_argument("keys and data must have the same size");
+    }
+
    int len = keys.size();
   
    // Load graph->vertices with new vertexes

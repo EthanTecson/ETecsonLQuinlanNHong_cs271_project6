@@ -82,10 +82,25 @@ void test_get(Graph<string, string> *G)
             cout << "Incorrect result getting non-existent vertex 5" << endl;
         }
         
-        // C3: Test for srtring-integer key (non-existent)
         if (L->get(123) != nullptr)
         {
             cout << "Incorrect result getting non-existent vertex with string key" << endl;
+        }
+
+        // Float Graph
+        vector<float> float_keys = {1.1, 2.2, 3.3, 4.4, 5.5};
+        vector<float> float_data = {101.1, 102.2, 103.3, 104.4, 105.5};
+        vector<vector<float>> float_edges = {{2.2, 5.5}, {3.3}, {4.4}, {1.1}, {}};
+        Graph<float, float> *F = new Graph<float, float>(float_keys, float_data, float_edges);
+
+        if (F->get(5.5) == nullptr || F->get(5.5)-> data != 105.5)
+        {
+            cout << "Incorrect result getting vertex 5.5" << endl;
+        }
+
+        if (F->get(6.6) != nullptr)
+        {
+            cout << "Incorrect result getting non-existant vertex 6.6" << endl;
         }
         
     }
@@ -144,7 +159,7 @@ void test_reachable(Graph<string, string> *G)
         {
             cout << "Incorrectly identified vertex \"X\" as unreachable from \"X\"" << endl;
         }
-        // C11: Check if same node is reachable to itself (unvalid reachability), not in a cycle
+        // C11: Check if same vertex is reachable to itself (unvalid reachability), not in a cycle
         if (G->reachable("T","T"))
         {
             cout << "Incorrectly identified vertex \"T\" as reachable from \"T\"" << endl;
@@ -163,15 +178,52 @@ void test_reachable(Graph<string, string> *G)
         vector<int> keys = {1, 2, 3, 4};
         vector<int> data = {101, 102, 103, 104};
         vector<vector<int>> edges = {{2, 3}, {4}, {}, {}};
-        Graph<int, int> *L = new Graph<int, int>(keys, data, edges);
+        Graph<int, int> *I = new Graph<int, int>(keys, data, edges);
 
         // Default reachable
-        if (!L->reachable(1,3)){
+        if (!I->reachable(1,3)){
             cout << "Incorrectly identified vertex 3 as unreachable from vertex 1" << endl;
         }
 
-        if (L->reachable(4,1)){
+        // Non reachable int
+        if (I->reachable(4,1)){
             cout << "Incorrectly identified vertex 1 as reachable from vertex 4" << endl;
+        }
+
+        // Check if vertex can reach itself (should be unvalid since there is no cycle)
+        if (I->reachable(1,1)){
+            cout << "Incorrectlyt identified vertex 1 as reachable from vertex 1" << endl;
+        }
+        if (I->reachable(4,4)){
+            cout << "Incorrectlyt identified vertex 1 as reachable from vertex 1" << endl;
+        }
+
+        // Float Graph
+        vector<float> float_keys = {1.1, 2.2, 3.3, 4.4, 5.5};
+        vector<float> float_data = {101.1, 102.2, 103.3, 104.4, 105.5};
+        vector<vector<float>> float_edges = {{2.2, 5.5}, {3.3}, {4.4}, {1.1}, {}};
+        Graph<float, float> *F = new Graph<float, float>(float_keys, float_data, float_edges);
+
+        // Default reachable
+        if (!F->reachable(1.1,3.3)){
+            cout << "Incorrectly identified vertex 3.3 as unreachable from vertex 1.1" << endl;
+        }
+        if (!F->reachable(4.4,5.5))
+        {
+            cout << "Incorrectly identified vertex 5.5 as unreachable from vertex 4.4" << endl;
+        }
+        
+        // Non reachable int
+        if (F->reachable(5.5,4.4)){
+            cout << "Incorrectly identified vertex 4.4 as reachable from vertex 5.5" << endl;
+        }
+
+        // Check if vertex can reach itself (should be valid since there is a cycle)
+        if (!F->reachable(1.1,1.1)){
+            cout << "Incorrectlyt identified vertex 1 as reachable from vertex 1" << endl;
+        }
+        if (!F->reachable(4.4,4.4)){
+            cout << "Incorrectlyt identified vertex 1 as reachable from vertex 1" << endl;
         }
 
     }
