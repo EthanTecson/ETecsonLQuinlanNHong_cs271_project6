@@ -328,38 +328,6 @@ void Graph<Data, Key>::bfs(Key source) const {
 
 
 /**
-* @brief dfs-visit
-*
-* helper function for dfs
-*
-* @param Vertex u
-*
-* @note Pre-Condition: graph is a valid graph
-* @note Post-Condition: 
-*
-* @returns none, but changes the attributes of the vertices
-*/
-template <typename Data, typename Key>
-void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
-    time_var = time_var + 1;
-    u->discovered = time_var;
-    u->color = 1;
-    int len = u->adjacencies_list.size();
-    
-    for( int i = 0; i < len; i++ ) {
-        if( u->adjacencies_list[i]->color == 0) {
-            u->adjacencies_list[i]->parent = u;
-            dfs_visit( u->adjacencies_list[i] );
-        }
-    }
-
-    u->color = 1;
-    time_var = time_var + 1;
-    u->finished = time_var;
-}
-
-
-/**
 * @brief edge_class
 *
 * 
@@ -402,6 +370,38 @@ string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
     }
 
     return ret;
+}
+
+
+/**
+* @brief dfs-visit
+*
+* helper function for dfs
+*
+* @param Vertex u
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: 
+*
+* @returns none, but changes the attributes of the vertices
+*/
+template <typename Data, typename Key>
+void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
+    time_var = time_var + 1;
+    u->discovered = time_var;
+    u->color = 1;
+    int len = u->adjacencies_list.size();
+    
+    for( int i = 0; i < len; i++ ) {
+        if( u->adjacencies_list[i]->color == 0) {
+            u->adjacencies_list[i]->parent = u;
+            dfs_visit( u->adjacencies_list[i] );
+        }
+    }
+
+    u->color = 2;
+    time_var = time_var + 1;
+    u->finished = time_var;
 }
 
 
