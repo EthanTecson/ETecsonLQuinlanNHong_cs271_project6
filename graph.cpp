@@ -361,6 +361,20 @@ void Graph<Data, Key>::bfs(Key source) const {
    }
 }
 
+
+
+/**
+* @brief bfs_tree
+*
+* performs a breadth-first search on the graph, starting at source s
+*
+* @param source s, of type Key
+*
+* @note Pre-Condition: source is the key of a valid Vertex<Data,Key> object
+* @note Post-Condition: creates a string bfs tree representation of a bfs-ed graph 
+*
+* @returns none, but print out a string bfs tree representaion of a bfs-ed graph
+*/
 template <typename Data, typename Key>
 void Graph<Data, Key>::bfs_tree(Key s) const {    
     stringstream result;
@@ -373,8 +387,6 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
 
     // Check if the starting vertex exists
     if (get(s) == nullptr) {
-        // result << "Source vertex not found" << endl;
-        // cout << result.str();
         return;
     }
 
