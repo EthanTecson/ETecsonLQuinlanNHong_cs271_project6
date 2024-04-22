@@ -340,8 +340,40 @@ void test_bfs(Graph<string, string> *G)
             }
         }
 
-    
-        
+        L->bfs(2);
+        int int_vertices_2[2] = {2,4};
+        int int_distances_2[2] = {0,1};
+        for (int i = 0; i < 2; i++){
+            if (L->get(int_vertices_2[i]) == nullptr || L->get(int_vertices_2[i])->distance != int_distances_2[i]){
+                cout << "Incorrect bfs result. Vertex " << int_vertices_2[i] << " should have distnace " << int_distances_2[i] << " from source vertex 2" << endl;
+            }
+        }
+
+
+        // Float Graph
+        vector<float> float_keys = {1.1, 2.2, 3.3, 4.4, 5.5};
+        vector<float> float_data = {101.1, 102.2, 103.3, 104.4, 105.5};
+        vector<vector<float>> float_edges = {{2.2, 5.5}, {3.3}, {4.4}, {1.1}, {}};
+        Graph<float, float> *F = new Graph<float, float>(float_keys, float_data, float_edges);
+
+
+        F->bfs(1.1);
+        float float_vertices[5] = {1.1, 2.2, 3.3, 4.4, 5.5};
+        float float_distances[5] = {0,1,2,3,1};
+        for (int i = 0; i < 5; i++){
+            if (F->get(float_vertices[i]) == nullptr || F->get(float_vertices[i])->distance != float_distances[i]){
+                cout << "Incorrect bfs result. Vertex " << float_vertices[i]  << " should have distance " << float_distances[i] << " from source vertex 1.1" << endl;
+            }
+        }
+
+        F->bfs(5.5);
+        float float_vertices_2[1] = {5.5};
+        float float_distances_2[1] = {0};
+        for (int i = 0; i < 1; i++){
+            if (F->get(float_vertices_2[i]) == nullptr || F->get(float_vertices_2[i])->distance != float_distances_2[i]){
+                cout << "Incorrect bfs result. Vertex " << float_vertices_2[i]  << " should have distance " << float_distances_2[i] << " from source vertex 1.1" << endl;
+            }
+        }        
     }
     catch (exception &e)
     {
@@ -402,6 +434,74 @@ void test_print_path(Graph<string, string> *G)
         {
             cout << "Incorrect path from vertex \"X\" to vertex \"W\". Expected X -> U -> Y -> W but got : " << X_W_buffer.str() << endl;
         }
+
+        // C6: Trying to print non existant vertex key
+        stringstream X_L_buffer;
+        streambuf *X_L_prevbuf = cout.rdbuf(X_L_buffer.rdbuf());
+        G->print_path("X", "L");
+        cout.rdbuf(X_L_prevbuf);
+        if (X_L_buffer.str() != "")
+        {
+            cout << "Incorrect path from vertex \"X\" to non-existant vertex \"L\". Expected '' but got : " << X_L_buffer.str() << endl;
+        }
+
+
+        // Ineteger Graph
+        vector<int> keys = {1, 2, 3, 4};
+        vector<int> data = {101, 102, 103, 104};
+        vector<vector<int>> edges = {{2, 3}, {4}, {}, {}};
+        Graph<int, int> *L = new Graph<int, int>(keys, data, edges);
+        stringstream one_four_buffer;
+        streambuf *one_four_prevbuf = cout.rdbuf(one_four_buffer.rdbuf());
+        L->print_path(1, 4);
+        cout.rdbuf(one_four_prevbuf);
+        if (one_four_buffer.str() != "1 -> 2 -> 4")
+        {
+            cout << "Incorrect path from vertex 1 to vertex 4. Expected `1 -> 2 -> 4' but got : " << one_four_buffer.str() << endl;
+        }
+
+        stringstream three_three_buffer;
+        streambuf *three_three_prevbuf = cout.rdbuf(three_three_buffer.rdbuf());
+        L->print_path(3,3);
+        cout.rdbuf(three_three_prevbuf);
+        if (three_three_buffer.str() != "3")
+        {
+            cout << "Incorrect path from vertex 3 to vertex 3. Expected `3' but got : " << three_three_buffer.str() << endl;
+        }
+
+        // Float Graph
+        vector<float> float_keys = {1.1, 2.2, 3.3, 4.4, 5.5};
+        vector<float> float_data = {101.1, 102.2, 103.3, 104.4, 105.5};
+        vector<vector<float>> float_edges = {{2.2, 5.5}, {3.3}, {4.4}, {1.1}, {}};
+        Graph<float, float> *F = new Graph<float, float>(float_keys, float_data, float_edges);
+
+        stringstream fone_four_buffer;
+        streambuf *fone_four_prevbuf = cout.rdbuf(fone_four_buffer.rdbuf());
+        F->print_path(1.1,4.4);
+        cout.rdbuf(fone_four_prevbuf);
+        if (fone_four_buffer.str() != "1.1 -> 2.2 -> 3.3 -> 4.4")
+        {
+            cout << "Incorrect path from vertex 1.1 to vertex 4.4. Expected `1.1 -> 2.2 -> 3.3 -> 4.4' but got : " << fone_four_buffer.str() << endl;
+        }
+        
+        stringstream ffive_three_buffer;
+        streambuf *ffive_three_prevbuff = cout.rdbuf(ffive_three_buffer.rdbuf());
+        F->print_path(5.5,3.3);
+        cout.rdbuf(ffive_three_prevbuff);
+        if (ffive_three_buffer.str() != "")
+        {
+            cout << "Incorrect path from vertex 3.3 to vertex 5.5. Expected `' but got : " << ffive_three_buffer.str() << endl;
+        }
+
+        stringstream non_existant_buffer;
+        streambuf *non_existant_prevbuff = cout.rdbuf(non_existant_buffer.rdbuf());
+        F->print_path(5.5,0.0);
+        cout.rdbuf(non_existant_prevbuff);
+        if (non_existant_buffer.str() != "")
+        {
+            cout << "Incorrect path from vertex 5.5 to non-existant vertex 0.0. Expected `' but got : " << non_existant_buffer.str() << endl;
+        }
+
     }
     catch (exception &e)
     {

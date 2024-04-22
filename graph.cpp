@@ -253,10 +253,6 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
 template<typename Data, typename Key>
 void Graph<Data, Key>::print_path(Key u, Key v) const{
 
-    if (!reachable(u,v)){
-        return;
-    }
-
     stringstream ss;
 
     // Need to reference nodes of given keys
@@ -264,9 +260,15 @@ void Graph<Data, Key>::print_path(Key u, Key v) const{
     Vertex<Data,Key>* v_ptr = get(v);
 
     // If keys are the same
+    // Just return itself
     if (u == v) {
         ss << u_ptr->key;
         cout << ss.str();
+        return;
+    }
+
+    // Otherwise, check if there is a valid path
+    if (!reachable(u,v)){
         return;
     }
 
