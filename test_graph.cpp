@@ -459,6 +459,7 @@ void test_bfs_tree(Graph<string, string> *G)
                  << buffer.str() << endl;
         }
 
+
         // Test case 2: Graph with 2 connected nodes
         vector<string> keys2 = {"A", "B"};
         vector<string> data2 = {"DataA", "DataB"};
@@ -466,7 +467,7 @@ void test_bfs_tree(Graph<string, string> *G)
         Graph<string, string> *H = new Graph<string, string>(keys2, data2, edges2);
         stringstream buffer2;
         streambuf *prevbuf2 = cout.rdbuf(buffer2.rdbuf());
-        H->bfs_tree("A");  // Now you can use -> because H is a pointer
+        H->bfs_tree("A");
         cout.rdbuf(prevbuf2);
         if (buffer2.str() != "A\nB")
         {
@@ -481,7 +482,7 @@ void test_bfs_tree(Graph<string, string> *G)
         Graph<string, string> *J = new Graph<string, string>(keys3, data3, edges3);
         stringstream buffer3;
         streambuf *prevbuf3 = cout.rdbuf(buffer3.rdbuf());
-        J->bfs_tree("A");  // Now you can use -> because J is a pointer
+        J->bfs_tree("A");
         cout.rdbuf(prevbuf3);
         if (buffer3.str() != "A\nB C\nD")
         {
@@ -496,7 +497,7 @@ void test_bfs_tree(Graph<string, string> *G)
         Graph<string, bool> *B = new Graph<string, bool>(keys4, data4, edges4);
         stringstream buffer4;
         streambuf *prevbuf4 = cout.rdbuf(buffer4.rdbuf());
-        B->bfs_tree("true");  // Now you can use -> because J is a pointer
+        B->bfs_tree("true");
         cout.rdbuf(prevbuf4);
         if (buffer4.str() != "1\n0")
         {
@@ -536,7 +537,41 @@ void test_bfs_tree(Graph<string, string> *G)
             cout << "Incorrect bfs tree. Expected : \n1.1\n2.2 3.3\n4.4\nbut got :\n"
                 << buffer6.str() << endl;
         }
+        delete F;
+    
+    
+        // empty graph
+        // Expected output: ""
+        Graph<string, string> *G_0 = new Graph<string, string>({}, {}, {});
+        G_0->bfs_tree("T");  // Should not crash or throw an exception
+        stringstream buffer0;
+        streambuf *prevbuf0 = cout.rdbuf(buffer0.rdbuf());
+        cout.rdbuf(prevbuf0);
+        //cout << "This code runs fine" << endl;
+        if (buffer0.str() != "")
+        {
+            cout << "Incorrect bfs tree. Expected : \nbut got :\n"
+                << buffer0.str() << endl;
+        }
+        delete G_0;
+
+        // Non-existent start vertex
+        vector<string> Keys = {"S", "U", "W", "R", "Y", "X", "V"};
+        vector<string> Data = {"DataS", "DataU", "DataW", "DataR", "DataY", "DataX", "DataV"};
+        vector<vector<string>> Edges = {{"U", "W"}, {"W"}, {}, {"Y", "X"}, {}, {}, {}};
+        Graph<string, string> *G_1 = new Graph<string, string>(Keys, Data, Edges);
+        G_1->bfs_tree("Z");
+        stringstream buffer_1;
+        streambuf *prevbuf_1 = cout.rdbuf(buffer_1.rdbuf());
+        cout.rdbuf(prevbuf_1);   
+        if (buffer_1.str() != "Source vertex not found")
+        {
+            cout << "Incorrect bfs tree. Expected : \nSource vertex not found\nbut got :\n"
+                << buffer_1.str() << endl;
+        }    
+        delete G_1;
     }
+
     catch (exception &e)
     {
         cerr << "Error testing bfs tree : " << e.what() << endl;

@@ -362,9 +362,18 @@ void Graph<Data, Key>::bfs(Key source) const {
 }
 
 template <typename Data, typename Key>
-void Graph<Data, Key>::bfs_tree(Key s) const {
+void Graph<Data, Key>::bfs_tree(Key s) const {    
+    stringstream result;
+    
+    // Check if the graph is empty
+    if (vertices.empty()){
+        return;
+    }
+
     // Check if the starting vertex exists
     if (get(s) == nullptr) {
+        result << "Source vertex not found" << endl;
+        cout << result.str();
         return;
     }
 
@@ -374,8 +383,7 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
     // Create a set to keep track of visited vertices
     unordered_set<Key> visited;
 
-    // Initialize a stringstream to store the result
-    stringstream result;
+    //stringstream result;
 
     // Add the source vertex to the queue and mark it visited
     q.push_back(get(s));
@@ -418,10 +426,8 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
             result << current_level_str.str();
         }
     }
-
-    // Convert the stringstream to a string and return
     cout << result.str();
-    //return;
+
 }
 
 
