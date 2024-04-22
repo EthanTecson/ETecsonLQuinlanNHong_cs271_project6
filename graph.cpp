@@ -1,12 +1,19 @@
+//-----------------------------------------------//
+//                    Graph                      //
+//             Implementation File               //
+//                                               //
+// Ethan Tecson, Nhien Hong, Liam Qiunlan        //
+//-----------------------------------------------//
+
 #include "graph.h"
 #include <sstream>
 #include <string>
 #include <queue>
 #include <stack>
+#include <unordered_map>
 #include <unordered_set>
 
 using namespace std;
-
 
 static int time_var;
 
@@ -15,18 +22,17 @@ static int time_var;
 //===================================
 
 
-
 /*
- * @brief Empty Constructor for Vertex Class
- *
- * Creates a Vertex Object with no values for key or data
- *
- * @param none
- *
- * @note Pre-Condition: none
- * @note Post-Condition: Creates a Node object
- *
- * @returns none
+* @brief Empty Constructor for Vertex Class
+*
+* Creates a Vertex Object with no values for key or data
+*
+* @param none
+*
+* @note Pre-Condition: none
+* @note Post-Condition: Creates a Vertex object
+*
+* @returns none
 */
 template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(){
@@ -77,7 +83,7 @@ Vertex<Data,Key>::Vertex(Data d, Key k){
 template <typename Data, typename Key>
 Vertex<Data, Key>::~Vertex() {
    // Nothing needed
-   // Will probably need to have a heper function that deletes nodes that
+   // Will probably need to have a heper function that deletes Vertices that
    // will be used in the Graph deconstructor
 }
 
@@ -92,7 +98,9 @@ Vertex<Data, Key>::~Vertex() {
 *
 * Creates graph object with parameter keys, data, and adjacencies
 *
-* @param keys vector, data vector, adjacencies vector of vectors
+* @param keys - vector keys for each vertex
+* @param data - vector that corresponds to each key's data
+* @param edges vector of vectors that hold adjacencies
 *
 * @note Pre-Condition: none
 * @note Post-Condition: creates a Graph object
@@ -102,7 +110,6 @@ Vertex<Data, Key>::~Vertex() {
 template <typename Data, typename Key>
 Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges) {
    int len = keys.size();
-   adjacencies.resize(len);
   
    // Load graph->vertices with new vertexes
    for( int i = 0; i < len; i++ ) {
@@ -118,18 +125,26 @@ Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>>
            current_vertex->adjacencies_list.push_back(get(edges[i][j]));
        }
    }
-
-
-   // Adjacencies
-   for( int j = 0; j < len; j++ ) {
-       int edges_len = edges[j].size();
-       for( int k = 0; k < edges_len; k++) {
-           Vertex<Data, Key> *new_ptr = get(edges[j][k]);
-           adjacencies[j].push_back(new_ptr);
-       }
-   }
 }
 
+/**
+* @brief Deconstructor for Graph Class
+*
+* Deallocates memory used within the Graph Class
+*
+* @param none
+*
+* @note Pre-Condition: There exist a valid graph class object
+* @note Post-Condition: Graph Class objects are deleted
+*
+* @returns none
+*/
+template <typename Data, typename Key>
+Graph<Data, Key>::~Graph() {
+    for (int i = 0; i < vertices.size(); i++) {
+        delete vertices[i];
+    }
+}
 
 
 /**
@@ -166,12 +181,10 @@ template <typename Data, typename Key>
 Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
    int len = vertices.size();
 
-
    for( int i = 0; i < len; i++ ) {
        if ( vertices[i]->key == k )
            return vertices[i];
    }
-
 
    return nullptr;
 }
@@ -182,8 +195,8 @@ Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
 * Determines whether or not the vertex with key "v" is reachable 
 * from the vertex of key "u"
 *
-* @param u - the key of the starting node of reachability
-* @param v - the key of the node to be checked if reachable from u 
+* @param u - the key of the starting vertex of reachability
+* @param v - the key of the vertes to be checked if reachable from u 
 *
 * @note Pre-Condition: Graph is a valid graph object with valid Vertex objects
 * @note Post-Condition: none
@@ -208,47 +221,93 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
         return false;
     }
 
-    // Give all nodes reachable from u a distance
+    // Give all vertexes reachable from u a distance other than -1
     bfs(u);
 
-    // Get node that will be checked if reachable
+    // Get vertex that will be checked if reachable
     Vertex<Data, Key> *v_ptr = get(v);
 
-    // If node to be reached has no set distance, it is not reachable from u
+    // If vertex to be reached has no set distance, it is not reachable from u
     if ( v_ptr->distance == -1 ){
         return false;
     }
 
-    return true;
+    // Check whether or not vertex can reach itself (it must be in a cycle)
+    bool cycle_check = false;
+
+    for (int i = 0; i < v_ptr->adjacencies_list.size(); i++){
+        bfs(v_ptr->adjacencies_list[i]->key);
+        if (v_ptr->distance != -1){
+            cycle_check = true;
+        }
+    }
+
+    return cycle_check;
 
 }
 
 
-// Function is not finished at time of push
+/**
+* @brief print_path
+*
+* Prints the shortest path between the vertex with key 'u' and key 'v'
+*
+* @param u - Starting vertex to print path
+* @param v - Last vertex to print path
+*
+* @note Pre-Condition: u and v are of valid Key data types
+* @note Post-Condition: none
+*
+* @returns A string show the shortest path between vertex with key 'u' and key 'v'
+*/
+template<typename Data, typename Key>
+void Graph<Data, Key>::print_path(Key u, Key v) const{
 
-// template<typename Data, typename Key>
-// string Graph<Data, Key>::print_path(Key u, Key v) const{
+    if (!reachable(u,v)){
+        return;
+    }
 
-//     // Check if vertex keys are in graph
-//     int check_counter = 0;
-//     for ( int i = 0; i < vertices.size(); i++ ){
-//         if (vertices[i]->key == u){
-//             check_counter++;
-//         }
-//         if (vertices[i]->key == v){
-//             check_counter++;
-//         }
-//     }
+    stringstream ss;
 
-//     stringstream ss;
+    // Need to reference nodes of given keys
+    Vertex<Data,Key>* u_ptr = get(u);
+    Vertex<Data,Key>* v_ptr = get(v);
 
-//     Vertex<Data,Key>* u_ptr = get(u);
-//     Vertex<Data,Key>* v_ptr = get(v);
+    // If keys are the same
+    if (u == v) {
+        ss << u_ptr->key;
+        cout << ss.str();
+        return;
+    }
 
-//     if (u == v){
-//         ss << 
-//     }
-// }
+    // Get all vertices parents
+    bfs(u);
+
+    stack<Vertex<Data,Key>*> vertexStack;
+
+    // Get path
+    while (v_ptr != nullptr){
+        vertexStack.push(v_ptr);
+        v_ptr = v_ptr->parent;
+    }
+    while (!vertexStack.empty()){
+        Vertex<Data,Key> *topVertex = vertexStack.top();
+        ss << topVertex->key;
+        vertexStack.pop();
+
+        // If item in stack is not the last item, use arrow
+        if (!vertexStack.empty()){
+            ss << " -> ";
+        }
+    }
+
+    // change ss into string and check if u and v are in ss string
+    string result = ss.str();
+
+    cout << result;
+
+    return;
+}
 
 
 
@@ -312,34 +371,68 @@ void Graph<Data, Key>::bfs(Key source) const {
    }
 }
 
+template <typename Data, typename Key>
+void Graph<Data, Key>::bfs_tree(Key s) const {
+    // Check if the starting vertex exists
+    if (get(s) == nullptr) {
+        return;
+    }
 
-/**
-* @brief dfs
-*
-* performs a depth-first search on the graph, starting at source s
-*
-* @param source s, of type Key
-*
-* @note Pre-Condition: graph is a valid graph
-* @note Post-Condition: performs dfs on graph
-*
-* @returns none, but changes the attributes of the vertices
-*/
-// template <typename Data, typename Key>
-// void Graph<Data, Key>::dfs() const {
-//     int len = vertices.size();
-//     for( int i = 0; i < len; i++ ) {
-//         vertices[i]->color = 0;
-//         vertices[i]->parent = nullptr;
-//     }
+    // Create a queue for BFS traversal
+    deque<Vertex<Data, Key>*> q;
 
-//     time_var = 0;
+    // Create a set to keep track of visited vertices
+    unordered_set<Key> visited;
 
-//     for( int j = 0; j < len; j++ ) {
-//         if( vertices[j]->color == 0 )
-//             dfs_visit( vertices[j] );
-//     }
-// }
+    // Initialize a stringstream to store the result
+    stringstream result;
+
+    // Add the source vertex to the queue and mark it visited
+    q.push_back(get(s));
+    visited.insert(s);
+
+    // Traverse BFS
+    while (!q.empty()) {
+        // Get the number of vertices in the current level
+        int level_size = q.size();
+
+        // Initialize a stringstream to store vertices in the current level
+        stringstream current_level_str;
+
+        // Process all vertices in the current level
+        for (int i = 0; i < level_size; i++) {
+            // Get the front vertex from the queue
+            Vertex<Data, Key>* vertex = q.front();
+            q.pop_front();
+
+            // Append the key of the vertex to the current level string
+            current_level_str << (current_level_str.tellp() == 0 ? "" : " ") << vertex->key;
+
+            // Visit all adjacent vertices of the current vertex
+            for (auto neighbor : vertex->adjacencies_list) {
+                // Check if the neighbor vertex has not been visited
+                if (visited.count(neighbor->key) == 0) {
+                    // Mark the neighbor vertex as visited and add it to the queue
+                    q.push_back(neighbor);
+                    visited.insert(neighbor->key);
+                }
+            }
+        }
+
+        // Append the current level string to the result
+        // Only add a newline character if this is not the last level
+        if (!q.empty()) {
+            result << current_level_str.str() << "\n";
+        }
+        else {
+            result << current_level_str.str();
+        }
+    }
+
+    // Convert the stringstream to a string and return
+    cout << result.str();
+    return;
+}
 
 
 /**
@@ -464,67 +557,3 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
 
     return ret;
 }
-
-template <typename Data, typename Key>
-void Graph<Data, Key>::bfs_tree(Key s) const {
-    // Check if the starting vertex exists
-    if (get(s) == nullptr) {
-        return;
-    }
-
-    // Create a queue for BFS traversal
-    deque<Vertex<Data, Key>*> q;
-
-    // Create a set to keep track of visited vertices
-    unordered_set<Key> visited;
-
-    // Initialize a stringstream to store the result
-    stringstream result;
-
-    // Add the source vertex to the queue and mark it visited
-    q.push_back(get(s));
-    visited.insert(s);
-
-    // Traverse BFS
-    while (!q.empty()) {
-        // Get the number of vertices in the current level
-        int level_size = q.size();
-
-        // Initialize a stringstream to store vertices in the current level
-        stringstream current_level_str;
-
-        // Process all vertices in the current level
-        for (int i = 0; i < level_size; i++) {
-            // Get the front vertex from the queue
-            Vertex<Data, Key>* vertex = q.front();
-            q.pop_front();
-
-            // Append the key of the vertex to the current level string
-            current_level_str << (current_level_str.tellp() == 0 ? "" : " ") << vertex->key;
-
-            // Visit all adjacent vertices of the current vertex
-            for (auto neighbor : vertex->adjacencies_list) {
-                // Check if the neighbor vertex has not been visited
-                if (visited.count(neighbor->key) == 0) {
-                    // Mark the neighbor vertex as visited and add it to the queue
-                    q.push_back(neighbor);
-                    visited.insert(neighbor->key);
-                }
-            }
-        }
-
-
-        // Append the current level string to the result
-        // Only append a newline if there are more vertices to process
-        if (!q.empty()) {
-            result << current_level_str.str() << "\n";
-        }
-        else {
-            result << current_level_str.str();
-        }
-    }
-
-    cout << result.str();
-
-}
- 

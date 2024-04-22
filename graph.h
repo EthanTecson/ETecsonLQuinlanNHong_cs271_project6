@@ -1,7 +1,7 @@
 
 //-----------------------------------------------//
-//              Binary Search Tree               //
-//               Constructor File                //
+//                    Graph                      //
+//                 Header File                   //
 //                                               //
 // Ethan Tecson, Nhien Hong, Liam Qiunlan        //
 //-----------------------------------------------//
@@ -47,7 +47,6 @@ template <typename Data, typename Key>
 class Graph {
    private:
        vector<Vertex<Data,Key>*> vertices;
-       vector<vector<Vertex<Data, Key>*>> adjacencies;
 
    public:
        Graph();
@@ -56,15 +55,12 @@ class Graph {
        Vertex<Data, Key>* get(Key k) const;
        bool reachable(Key u, Key v) const;
        void bfs(Key source) const;
-       string print_path(Key u, Key v) const;
+       void print_path(Key u, Key v) const;
        void bfs_tree(Key s) const;
-
-       //void dfs() const;
        void dfs_visit( Vertex<Data,Key> *u ) const; 
        string edge_class(Key u_key, Key v_key) const;
        string edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const;
 };
-
 
 #endif
 
