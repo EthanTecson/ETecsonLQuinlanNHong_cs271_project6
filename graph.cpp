@@ -211,17 +211,23 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
         return false;
     }
 
-    // Check whether or not vertex can reach itself (it must be in a cycle)
+    // If u == v, check whether or not if it can reach itself 
     bool cycle_check = false;
-
-    for (int i = 0; i < v_ptr->adjacencies_list.size(); i++){
-        bfs(v_ptr->adjacencies_list[i]->key);
-        if (v_ptr->distance != -1){
-            cycle_check = true;
+    if (u == v){
+        // preform BFS on every adjacent vertex to v
+        for (int i = 0; i < v_ptr->adjacencies_list.size(); i++){
+            bfs(v_ptr->adjacencies_list[i]->key);
+            // If you can reach v from one of v's adjacent, it is in a cycle and can reach itself
+            if (v_ptr->distance != -1){
+                cycle_check = true;
+                break;
+            }   
         }
+
+        return cycle_check;
     }
 
-    return cycle_check;
+    return true;
 
 }
 

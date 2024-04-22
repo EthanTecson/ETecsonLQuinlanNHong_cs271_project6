@@ -64,6 +64,29 @@ void test_get(Graph<string, string> *G)
         {
             cout << "Incorrect result getting non-existent vertex with string key" << endl;
         }
+
+        // Ineteger Graph
+        vector<int> keys = {1, 2, 3, 4};
+        vector<int> data = {101, 102, 103, 104};
+        vector<vector<int>> edges = {{2, 3}, {4}, {}, {}};
+        Graph<int, int> *L = new Graph<int, int>(keys, data, edges);
+        // C1: Default test, return pointer to valid node and test its data
+        if (L->get(1) == nullptr || L->get(1)->data != 101)
+        {
+            cout << "Incorrect result getting vertex 1" << endl;
+        }
+        
+        // C2: Test for key that does not exist
+        if (L->get(5) != nullptr)
+        {
+            cout << "Incorrect result getting non-existent vertex 5" << endl;
+        }
+        
+        // C3: Test for srtring-integer key (non-existent)
+        if (L->get(123) != nullptr)
+        {
+            cout << "Incorrect result getting non-existent vertex with string key" << endl;
+        }
         
     }
     catch (exception &e)
@@ -134,6 +157,21 @@ void test_reachable(Graph<string, string> *G)
         if (!G->reachable("T","V"))
         {
             cout << "Incorrectly identified vertex \"V\" as unreachable from \"T\"" << endl;
+        }
+
+        // Ineteger Graph
+        vector<int> keys = {1, 2, 3, 4};
+        vector<int> data = {101, 102, 103, 104};
+        vector<vector<int>> edges = {{2, 3}, {4}, {}, {}};
+        Graph<int, int> *L = new Graph<int, int>(keys, data, edges);
+
+        // Default reachable
+        if (!L->reachable(1,3)){
+            cout << "Incorrectly identified vertex 3 as unreachable from vertex 1" << endl;
+        }
+
+        if (L->reachable(4,1)){
+            cout << "Incorrectly identified vertex 1 as reachable from vertex 4" << endl;
         }
 
     }
@@ -234,6 +272,23 @@ void test_bfs(Graph<string, string> *G)
                 cout << "Incorrect bfs result. Vertex " << vertices_X[i] << " should have distance " << distances_X[i] << " from source vertex \"x\"" << endl;
             }
         }
+
+        // Ineteger Graph
+        vector<int> keys = {1, 2, 3, 4};
+        vector<int> data = {101, 102, 103, 104};
+        vector<vector<int>> edges = {{2, 3}, {4}, {}, {}};
+        Graph<int, int> *L = new Graph<int, int>(keys, data, edges);
+
+        L->bfs(1);
+        int int_vertices[4] = {1,2,3,4};
+        int int_distances[4] = {0,1,1,2};
+        for (int i = 0; i < 4; i++){
+            if (L->get(int_vertices[i]) == nullptr || L->get(int_vertices[i])->distance != int_distances[i]){
+                cout << "Incorrect bfs result. Vertex " << int_vertices[i]  << " should have distance " << int_distances[i] << " from source vertex 1" << endl;
+            }
+        }
+
+    
         
     }
     catch (exception &e)
