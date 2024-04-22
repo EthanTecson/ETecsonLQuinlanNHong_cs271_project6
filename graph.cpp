@@ -360,7 +360,6 @@ string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
                 ret = edge_class_helper( u, v, ret );
             }
             else {
-                cout << "in else statement\n";
                 return "back edge";
             }
         }
@@ -429,11 +428,10 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
             if( u->adjacencies_list[i]->color == 0 )
                 return "tree edge";
             if( u->adjacencies_list[i]->color == 1 ) {
-                cout << "YES\n";
                 return "back edge";
             }
             if( u->adjacencies_list[i]->color == 2 ) {
-                if( u->distance < u->adjacencies_list[i]->distance )
+                if( u->discovered < u->adjacencies_list[i]->discovered )
                     return "forward edge";
                 else 
                     return "cross edge";
