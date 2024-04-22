@@ -359,10 +359,6 @@ void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
 }
 
 
-
-
-
-
 /**
 * @brief edge_class
 *
@@ -391,8 +387,14 @@ string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
     time_var = 0;
 
     for( int j = 0; j < len; j++ ) {
-        if( vertices[j]->color == 0 && vertices[j] == u ) {
-            ret = edge_class_helper( u, v, ret );
+        if( vertices[j] == u ) {
+            if( vertices[j]->color == 0 ) {
+                ret = edge_class_helper( u, v, ret );
+            }
+            else {
+                cout << "in else statement\n";
+                return "back edge";
+            }
         }
         else if( vertices[j]->color == 0 ) {
             dfs_visit( vertices[j] );
@@ -423,16 +425,19 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
     int len = u->adjacencies_list.size();
     
     for( int i = 0; i < len; i++ ) {
-        if( u->adjacencies_list[i]->color == 1 )
-            return "back edge";
-        else if( u->adjacencies_list[i]->color == 2 ){
-            if( u->distance > u->adjacencies_list[i]->distance )
-                return "forward edge";
-            else 
-                return "cross edge";
-        }
-        else if( u->adjacencies_list[i]->color == 0 && u->adjacencies_list[i] == v ) {
-            return "tree edge";
+        if ( u->adjacencies_list[i] == v ) {
+            if( u->adjacencies_list[i]->color == 0 )
+                return "tree edge";
+            if( u->adjacencies_list[i]->color == 1 ) {
+                cout << "YES\n";
+                return "back edge";
+            }
+            if( u->adjacencies_list[i]->color == 2 ) {
+                if( u->distance < u->adjacencies_list[i]->distance )
+                    return "forward edge";
+                else 
+                    return "cross edge";
+            }
         }
         else if ( u->adjacencies_list[i]->color == 0 ) {
             u->adjacencies_list[i]->parent = u;
@@ -440,9 +445,10 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
         }
     }
 
-    u->color = 1;
+    u->color = 2;
     time_var = time_var + 1;
     u->finished = time_var;
 
     return ret;
 }
+
