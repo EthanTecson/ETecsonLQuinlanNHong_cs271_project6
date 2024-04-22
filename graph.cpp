@@ -410,7 +410,7 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
 
     // Convert the stringstream to a string and return
     cout << result.str();
-    return;
+    //return;
 }
 
 

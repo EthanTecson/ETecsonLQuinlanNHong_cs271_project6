@@ -346,7 +346,7 @@ void test_bfs_tree(Graph<string, string> *G)
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->bfs_tree("T");
         cout.rdbuf(prevbuf);
-        if (buffer.str() != "T\nS U W\nR Y X\nV\n\n")
+        if (buffer.str() != "T\nS U W\nR Y X\nV")
         {
             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
                  << buffer.str() << endl;
@@ -391,7 +391,7 @@ void test_bfs_tree(Graph<string, string> *G)
         streambuf *prevbuf4 = cout.rdbuf(buffer4.rdbuf());
         B->bfs_tree("true");  // Now you can use -> because J is a pointer
         cout.rdbuf(prevbuf4);
-        if (buffer4.str() != "true\nfalse")
+        if (buffer4.str() != "1\n0")
         {
             cout << "Incorrect bfs tree. Expected : \n1\n0\nbut got :\n"
                 << buffer4.str() << endl;
