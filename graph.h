@@ -5,10 +5,8 @@
 // Ethan Tecson, Nhien Hong, Liam Qiunlan        //
 //-----------------------------------------------//
 
-
 #ifndef GRAPH_H
 #define GRAPH_H
-
 
 #include <iostream>
 #include <vector>
@@ -28,7 +26,6 @@ class Vertex {
        vector<Vertex<Data, Key>*> adjacencies_list;
        friend class Graph<Data, Key>;
        
-    //    int time_var;
        int color; // 0 = white, 1 = gray, 2 = black
        int discovered;
        int finished;
@@ -37,7 +34,6 @@ class Vertex {
        Data data;
        Key key;
        int distance;
-
 
        Vertex();
        Vertex(Data d, Key k);
@@ -52,7 +48,6 @@ class Graph {
        vector<Vertex<Data,Key>*> vertices;
        vector<vector<Vertex<Data, Key>*>> adjacencies;
 
-
    public:
        Graph();
        Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges);
@@ -63,15 +58,12 @@ class Graph {
        string print_path(Key u, Key v) const;
        string bfs_tree(Key s) const;
 
-    //    void dfs() const;
+       //void dfs() const;
        void dfs_visit( Vertex<Data,Key> *u ) const; 
-
        string edge_class(Key u_key, Key v_key) const;
        string edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const;
 };
 
 
 #endif
-
-
 

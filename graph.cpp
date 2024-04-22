@@ -28,8 +28,6 @@ static int time_var;
  *
  * @returns none
 */
-
-
 template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(){
    parent = nullptr;
@@ -330,40 +328,40 @@ void Graph<Data, Key>::bfs(Key source) const {
 /**
 * @brief edge_class
 *
-* 
+* performs a depth-first search on Graph object, returning the edge class of edge (u,v)
 *
-* @param 
+* @param u_key, v_key
 *
-* @note Pre-Condition: 
-* @note Post-Condition: 
+* @note Pre-Condition: u_key and v_key are valid keys of vertices in the Graph
+* @note Post-Condition: none, but returns the edge class of edge (u,v)
 *
-* @returns 
+* @returns returns the edge class of edge (u,v)
 */
 template <typename Data, typename Key>
 string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
-    Vertex<Data,Key> *u = get( u_key );
+    Vertex<Data,Key> *u = get( u_key ); // set pointers u and v from key parameters
     Vertex<Data,Key> *v = get( v_key );
 
     int len = vertices.size();
     string ret = "no edge";
 
-    for( int i = 0; i < len; i++ ) {
+    for( int i = 0; i < len; i++ ) { // set all colors to white and parents to null
         vertices[i]->color = 0;
         vertices[i]->parent = nullptr;
     }
 
     time_var = 0;
 
-    for( int j = 0; j < len; j++ ) {
-        if( vertices[j] == u ) {
-            if( vertices[j]->color == 0 ) {
+    for( int j = 0; j < len; j++ ) { // for each vertex in vertices
+        if( vertices[j] == u ) { // if vertex equal to u
+            if( vertices[j]->color == 0 ) { // if white
                 ret = edge_class_helper( u, v, ret );
             }
-            else {
+            else { 
                 return "back edge";
             }
         }
-        else if( vertices[j]->color == 0 ) {
+        else if( vertices[j]->color == 0 ) { // if vertex not equal to u
             dfs_visit( vertices[j] );
         }
     }
@@ -380,7 +378,7 @@ string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
 * @param Vertex u
 *
 * @note Pre-Condition: graph is a valid graph
-* @note Post-Condition: 
+* @note Post-Condition: changes attributes of vertices
 *
 * @returns none, but changes the attributes of the vertices
 */
@@ -391,7 +389,7 @@ void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
     u->color = 1;
     int len = u->adjacencies_list.size();
     
-    for( int i = 0; i < len; i++ ) {
+    for( int i = 0; i < len; i++ ) { // for vertex in G.Adj[u]
         if( u->adjacencies_list[i]->color == 0) {
             u->adjacencies_list[i]->parent = u;
             dfs_visit( u->adjacencies_list[i] );
@@ -407,14 +405,14 @@ void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
 /**
 * @brief edge_class_helper
 *
-* helper function for edge_class
+* like dfs-visit, but returns class of edge (u,v)
 *
-* @param Vertex u
+* @param Vertex u, Vertex v, string ret
 *
 * @note Pre-Condition: graph is a valid graph
-* @note Post-Condition: 
+* @note Post-Condition: changes attributes of Vertices, returns edge class
 *
-* @returns none, but changes the attributes of the vertices
+* @returns edge class string, and changes the attributes of the vertices
 */
 template <typename Data, typename Key>
 string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const {
@@ -423,21 +421,21 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
     u->color = 1;
     int len = u->adjacencies_list.size();
     
-    for( int i = 0; i < len; i++ ) {
-        if ( u->adjacencies_list[i] == v ) {
-            if( u->adjacencies_list[i]->color == 0 )
+    for( int i = 0; i < len; i++ ) { // for vertex in G.Adj[u]
+        if ( u->adjacencies_list[i] == v ) { // if vertex = v 
+            if( u->adjacencies_list[i]->color == 0 ) // if white
                 return "tree edge";
-            if( u->adjacencies_list[i]->color == 1 ) {
+            if( u->adjacencies_list[i]->color == 1 ) { // if gray
                 return "back edge";
             }
-            if( u->adjacencies_list[i]->color == 2 ) {
-                if( u->discovered < u->adjacencies_list[i]->discovered )
+            if( u->adjacencies_list[i]->color == 2 ) { // if black
+                if( u->discovered < u->adjacencies_list[i]->discovered ) // forward if u.distance < v.distance
                     return "forward edge";
                 else 
                     return "cross edge";
             }
         }
-        else if ( u->adjacencies_list[i]->color == 0 ) {
+        else if ( u->adjacencies_list[i]->color == 0 ) { // if vertex != v
             u->adjacencies_list[i]->parent = u;
             dfs_visit( u->adjacencies_list[i] );
         }
