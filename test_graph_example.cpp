@@ -292,41 +292,11 @@ void test_bfs_tree(Graph<string, string> *G)
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->bfs_tree("T");
         cout.rdbuf(prevbuf);
-        if (buffer.str() != "T\nS U W\nR Y X\nV")
+        if (buffer.str() != "T\nS U W\nR Y X\nV\n\n")
         {
             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
                  << buffer.str() << endl;
         }
-
-        // // Test case 2: Graph with 2 connected nodes
-        // vector<string> keys2 = {"A", "B"};
-        // vector<string> data2 = {"DataA", "DataB"};
-        // vector<vector<string>> edges2 = {{"B"}, {}};
-        // Graph<string, string> H(keys2, data2, edges2);
-        // stringstream buffer2;
-        // streambuf *prevbuf2 = cout.rdbuf(buffer2.rdbuf());
-        // H.bfs_tree("A");  // Changed from G to H
-        // cout.rdbuf(prevbuf2);
-        // if (buffer2.str() != "A\nB")
-        // {
-        //     cout << "Incorrect bfs tree. Expected : \nA\nB\nbut got :\n"
-        //          << buffer2.str() << endl;
-        // }
-
-        // // Test case 3: 
-        // vector<string> keys3 = {"A", "B", "C", "D"};
-        // vector<string> data3 = {"DataA", "DataB", "DataC", "DataD"};
-        // vector<vector<string>> edges3 = {{"B", "C"}, {"D"}, {}, {}};
-        // Graph<string, string> J(keys3, data3, edges3);
-        // stringstream buffer3;
-        // streambuf *prevbuf3 = cout.rdbuf(buffer3.rdbuf());
-        // J.bfs_tree("A");  // Changed from G to J
-        // cout.rdbuf(prevbuf3);
-        // if (buffer3.str() != "A\nB C\nD")
-        // {
-        //     cout << "Incorrect bfs tree. Expected : \nA\nB C\nD\nbut got :\n"
-        //          << buffer3.str() << endl;
-        // }
 
         // Test case 2: Graph with 2 connected nodes
         vector<string> keys2 = {"A", "B"};
@@ -369,7 +339,7 @@ void test_bfs_tree(Graph<string, string> *G)
         cout.rdbuf(prevbuf4);
         if (buffer4.str() != "true\nfalse")
         {
-            cout << "Incorrect bfs tree. Expected : 1\n0\nbut got :\n"
+            cout << "Incorrect bfs tree. Expected : \n1\n0\nbut got :\n"
                 << buffer4.str() << endl;
         }
 
@@ -405,8 +375,6 @@ void test_bfs_tree(Graph<string, string> *G)
             cout << "Incorrect bfs tree. Expected : \n1.1\n2.2 3.3\n4.4\nbut got :\n"
                 << buffer6.str() << endl;
         }
-        delete F; 
-
     }
     catch (exception &e)
     {

@@ -465,10 +465,10 @@ string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key
 }
 
 template <typename Data, typename Key>
-string Graph<Data, Key>::bfs_tree(Key s) const {
+void Graph<Data, Key>::bfs_tree(Key s) const {
     // Check if the starting vertex exists
     if (get(s) == nullptr) {
-        return "Source vertex not found";
+        return;
     }
 
     // Create a queue for BFS traversal
@@ -512,12 +512,18 @@ string Graph<Data, Key>::bfs_tree(Key s) const {
             }
         }
 
+
         // Append the current level string to the result
-        result << current_level_str.str() << "\n";
+        // Only append a newline if there are more vertices to process
+        if (!q.empty()) {
+            result << current_level_str.str() << "\n";
+        }
+        else {
+            result << current_level_str.str();
+        }
     }
 
-    // Convert the stringstream to a string and return
-    cout << result.str() << endl;
-    return result.str();
+    cout << result.str();
+
 }
  
