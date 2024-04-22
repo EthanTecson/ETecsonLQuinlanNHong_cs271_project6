@@ -346,10 +346,88 @@ void test_bfs_tree(Graph<string, string> *G)
         streambuf *prevbuf = cout.rdbuf(buffer.rdbuf());
         G->bfs_tree("T");
         cout.rdbuf(prevbuf);
-        if (buffer.str() != "T\nS U W\nR Y X\nV")
+        if (buffer.str() != "T\nS U W\nR Y X\nV\n\n")
         {
             cout << "Incorrect bfs tree. Expected : \nT\nS U W\nR Y X\nV \nbut got :\n"
                  << buffer.str() << endl;
+        }
+
+        // Test case 2: Graph with 2 connected nodes
+        vector<string> keys2 = {"A", "B"};
+        vector<string> data2 = {"DataA", "DataB"};
+        vector<vector<string>> edges2 = {{"B"}, {}};
+        Graph<string, string> *H = new Graph<string, string>(keys2, data2, edges2);
+        stringstream buffer2;
+        streambuf *prevbuf2 = cout.rdbuf(buffer2.rdbuf());
+        H->bfs_tree("A");  // Now you can use -> because H is a pointer
+        cout.rdbuf(prevbuf2);
+        if (buffer2.str() != "A\nB")
+        {
+            cout << "Incorrect bfs tree. Expected : \nA\nB\nbut got :\n"
+                << buffer2.str() << endl;
+        }
+
+        // Test case 3: 
+        vector<string> keys3 = {"A", "B", "C", "D"};
+        vector<string> data3 = {"DataA", "DataB", "DataC", "DataD"};
+        vector<vector<string>> edges3 = {{"B", "C"}, {"D"}, {}, {}};
+        Graph<string, string> *J = new Graph<string, string>(keys3, data3, edges3);
+        stringstream buffer3;
+        streambuf *prevbuf3 = cout.rdbuf(buffer3.rdbuf());
+        J->bfs_tree("A");  // Now you can use -> because J is a pointer
+        cout.rdbuf(prevbuf3);
+        if (buffer3.str() != "A\nB C\nD")
+        {
+            cout << "Incorrect bfs tree. Expected : \nA\nB C\nD\nbut got :\n"
+                << buffer3.str() << endl;
+        }
+
+        // Test case 4: Boolean keys
+        vector<bool> keys4 = {true, false};
+        vector<string> data4 = {"DataTrue", "DataFalse"};
+        vector<vector<bool>> edges4 = {{false}, {}};
+        Graph<string, bool> *B = new Graph<string, bool>(keys4, data4, edges4);
+        stringstream buffer4;
+        streambuf *prevbuf4 = cout.rdbuf(buffer4.rdbuf());
+        B->bfs_tree("true");  // Now you can use -> because J is a pointer
+        cout.rdbuf(prevbuf4);
+        if (buffer4.str() != "true\nfalse")
+        {
+            cout << "Incorrect bfs tree. Expected : \n1\n0\nbut got :\n"
+                << buffer4.str() << endl;
+        }
+
+
+        // Test case 5: Integer keys
+        vector<int> keys5 = {1, 2, 3, 4};
+        vector<string> data5 = {"Data1", "Data2", "Data3", "Data4"};
+        vector<vector<int>> edges5 = {{2, 3}, {4}, {}, {}};
+        Graph<string, int> *L = new Graph<string, int>(keys5, data5, edges5);
+        stringstream buffer5;
+        streambuf *prevbuf5 = cout.rdbuf(buffer5.rdbuf());
+        L->bfs_tree(1);
+        cout.rdbuf(prevbuf5);
+        if (buffer5.str() != "1\n2 3\n4")
+        {
+            cout << "Incorrect bfs tree. Expected : \n1\n2 3\n4\nbut got :\n"
+                << buffer5.str() << endl;
+        }
+        delete L; 
+
+        
+        // Test case 6: Float keys
+        vector<float> keys6 = {1.1, 2.2, 3.3, 4.4};
+        vector<string> data6 = {"Data1.1", "Data2.2", "Data3.3", "Data4.4"};
+        vector<vector<float>> edges6 = {{2.2, 3.3}, {4.4}, {}, {}};
+        Graph<string, float> *F = new Graph<string, float>(keys6, data6, edges6);
+        stringstream buffer6;
+        streambuf *prevbuf6 = cout.rdbuf(buffer6.rdbuf());
+        F->bfs_tree(1.1);
+        cout.rdbuf(prevbuf6);
+        if (buffer6.str() != "1.1\n2.2 3.3\n4.4")
+        {
+            cout << "Incorrect bfs tree. Expected : \n1.1\n2.2 3.3\n4.4\nbut got :\n"
+                << buffer6.str() << endl;
         }
     }
     catch (exception &e)
@@ -357,6 +435,7 @@ void test_bfs_tree(Graph<string, string> *G)
         cerr << "Error testing bfs tree : " << e.what() << endl;
     }
 }
+
 
 int main()
 {
