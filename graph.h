@@ -1,3 +1,4 @@
+
 //-----------------------------------------------//
 //              Binary Search Tree               //
 //               Constructor File                //
@@ -56,7 +57,7 @@ class Graph {
        bool reachable(Key u, Key v) const;
        void bfs(Key source) const;
        string print_path(Key u, Key v) const;
-       string bfs_tree(Key s) const;
+       void bfs_tree(Key s) const;
 
        //void dfs() const;
        void dfs_visit( Vertex<Data,Key> *u ) const; 
