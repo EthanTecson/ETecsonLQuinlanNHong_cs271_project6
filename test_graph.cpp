@@ -1,9 +1,9 @@
-//
-//  test_graph_example.cpp
-//  CS 271 Graph Project: Example Test File
-//
-//  Created by Dr. Stacey Truex
-//
+//-----------------------------------------------//
+//                    Graph                      //
+//                 Testing File                  //
+//                                               //
+// Ethan Tecson, Nhien Hong, Liam Qiunlan        //
+//-----------------------------------------------//
 
 #include <fstream>
 #include <sstream>

@@ -1,3 +1,10 @@
+//-----------------------------------------------//
+//                    Graph                      //
+//             Implementation File               //
+//                                               //
+// Ethan Tecson, Nhien Hong, Liam Qiunlan        //
+//-----------------------------------------------//
+
 #include "graph.h"
 #include <sstream>
 #include <string>
@@ -27,8 +34,6 @@ static int time_var;
 *
 * @returns none
 */
-
-
 template <typename Data, typename Key>
 Vertex<Data,Key>::Vertex(){
    parent = nullptr;
@@ -93,9 +98,9 @@ Vertex<Data, Key>::~Vertex() {
 *
 * Creates graph object with parameter keys, data, and adjacencies
 *
-* @param keys vector
-* @param data vector
-* @param adjacencies vector of vectors
+* @param keys - vector keys for each vertex
+* @param data - vector that corresponds to each key's data
+* @param edges vector of vectors that hold adjacencies
 *
 * @note Pre-Condition: none
 * @note Post-Condition: creates a Graph object
@@ -105,7 +110,6 @@ Vertex<Data, Key>::~Vertex() {
 template <typename Data, typename Key>
 Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>> edges) {
    int len = keys.size();
-   adjacencies.resize(len);
   
    // Load graph->vertices with new vertexes
    for( int i = 0; i < len; i++ ) {
@@ -119,16 +123,6 @@ Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>>
        Vertex<Data,Key>* current_vertex = get(keys[i]);
        for ( int j = 0; j < edges[i].size(); j++){
            current_vertex->adjacencies_list.push_back(get(edges[i][j]));
-       }
-   }
-
-
-   // Adjacencies
-   for( int j = 0; j < len; j++ ) {
-       int edges_len = edges[j].size();
-       for( int k = 0; k < edges_len; k++) {
-           Vertex<Data, Key> *new_ptr = get(edges[j][k]);
-           adjacencies[j].push_back(new_ptr);
        }
    }
 }

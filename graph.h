@@ -1,6 +1,6 @@
 //-----------------------------------------------//
-//              Binary Search Tree               //
-//               Constructor File                //
+//                    Graph                      //
+//                 Header File                   //
 //                                               //
 // Ethan Tecson, Nhien Hong, Liam Qiunlan        //
 //-----------------------------------------------//
@@ -46,7 +46,6 @@ template <typename Data, typename Key>
 class Graph {
    private:
        vector<Vertex<Data,Key>*> vertices;
-       vector<vector<Vertex<Data, Key>*>> adjacencies;
 
    public:
        Graph();
