@@ -363,21 +363,27 @@ void Graph<Data, Key>::bfs(Key source) const {
    }
 }
 
+
+
+/**
+* @brief bfs_tree
+*
+* performs a breadth-first search on the graph, starting at source s
+*
+* @param source s, of type Key
+*
+* @note Pre-Condition: source is the key of a valid Vertex<Data,Key> object
+* @note Post-Condition: creates a string bfs tree representation of a bfs-ed graph 
+*
+* @returns none, but print out a string bfs tree representaion of a bfs-ed graph
+*/
 template <typename Data, typename Key>
 void Graph<Data, Key>::bfs_tree(Key s) const {    
     stringstream result;
     
-    // Check if the graph is empty
-    if (vertices.empty()){
-        
-        return;
-    }
-
-    // Check if the starting vertex exists
-    if (get(s) == nullptr) {
-        // result << "Source vertex not found" << endl;
-        // cout << result.str();
-        return;
+    // Check if the graph is empty or if the starting vertex s exists
+    if (vertices.empty() || get(s) == nullptr){    
+        return; //simply return 
     }
 
     // Create a queue for BFS traversal
@@ -385,8 +391,6 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
 
     // Create a set to keep track of visited vertices
     unordered_set<Key> visited;
-
-    //stringstream result;
 
     // Add the source vertex to the queue and mark it visited
     q.push_back(get(s));
@@ -421,8 +425,8 @@ void Graph<Data, Key>::bfs_tree(Key s) const {
         }
 
         // Append the current level string to the result
-        // Only add a newline character if this is not the last level
         if (!q.empty()) {
+            // Only add a newline character if this is not the last level
             result << current_level_str.str() << "\n";
         }
         else {
