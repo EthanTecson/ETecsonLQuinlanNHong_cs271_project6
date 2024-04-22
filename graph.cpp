@@ -3,8 +3,12 @@
 #include <string>
 #include <queue>
 #include <stack>
+#include <unordered_map>
+#include <unordered_set>
 
 using namespace std;
+
+static int time_var;
 
 //===================================
 // Vertex Class
@@ -89,7 +93,9 @@ Vertex<Data, Key>::~Vertex() {
 *
 * Creates graph object with parameter keys, data, and adjacencies
 *
-* @param keys vector, data vector, adjacencies vector of vectors
+* @param keys vector
+* @param data vector
+* @param adjacencies vector of vectors
 *
 * @note Pre-Condition: none
 * @note Post-Condition: creates a Graph object
@@ -127,6 +133,24 @@ Graph<Data, Key>::Graph(vector<Key> keys, vector<Data> data, vector<vector<Key>>
    }
 }
 
+/**
+* @brief Deconstructor for Graph Class
+*
+* Deallocates memory used within the Graph Class
+*
+* @param none
+*
+* @note Pre-Condition: There exist a valid graph class object
+* @note Post-Condition: Graph Class objects are deleted
+*
+* @returns none
+*/
+template <typename Data, typename Key>
+Graph<Data, Key>::~Graph() {
+    for (int i = 0; i < vertices.size(); i++) {
+        delete vertices[i];
+    }
+}
 
 
 
@@ -146,12 +170,10 @@ template <typename Data, typename Key>
 Vertex<Data, Key>* Graph<Data, Key>::get(Key k) const {
    int len = vertices.size();
 
-
    for( int i = 0; i < len; i++ ) {
        if ( vertices[i]->key == k )
            return vertices[i];
    }
-
 
    return nullptr;
 }
@@ -199,7 +221,17 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
         return false;
     }
 
-    return true;
+    // Check whether or not vertex can reach itself (it must be in a cycle)
+    bool cycle_check = false;
+
+    for (int i = 0; i < v_ptr->adjacencies_list.size(); i++){
+        bfs(v_ptr->adjacencies_list[i]->key);
+        if (v_ptr->distance != -1){
+            cycle_check = true;
+        }
+    }
+
+    return cycle_check;
 
 }
 
@@ -220,17 +252,6 @@ bool Graph<Data,Key>::reachable(Key u, Key v) const{
 template<typename Data, typename Key>
 void Graph<Data, Key>::print_path(Key u, Key v) const{
 
-    // Check if vertex keys are in graph
-    // int check_counter = 0;
-    // for ( int i = 0; i < vertices.size(); i++ ){
-    //     if (vertices[i]->key == u){
-    //         check_counter++;
-    //     }
-    //     if (vertices[i]->key == v){
-    //         check_counter++;
-    //     }
-    // }
-
     if (!reachable(u,v)){
         return;
     }
@@ -240,6 +261,13 @@ void Graph<Data, Key>::print_path(Key u, Key v) const{
     // Need to reference nodes of given keys
     Vertex<Data,Key>* u_ptr = get(u);
     Vertex<Data,Key>* v_ptr = get(v);
+
+    // If keys are the same
+    if (u == v) {
+        ss << u_ptr->key;
+        cout << ss.str();
+        return;
+    }
 
     // Get all vertices parents
     bfs(u);
@@ -266,25 +294,6 @@ void Graph<Data, Key>::print_path(Key u, Key v) const{
     string result = ss.str();
 
     cout << result;
-
-    // stringstream u_stringstring;
-    // stringstream v_stringstring;
-
-    // u_stringstring << u;
-    // v_stringstring << v;
-
-    // string u_result = u_stringstring.str();
-    // string v_result = v_stringstring.str();
-
-    // if (result.find(u_result) == string::npos) {
-    //     cout << "";
-    // }
-    // else if (result.find(v_result) == string::npos) {
-    //     cout << "";
-    // }
-    // else {
-    //     cout << result;
-    // }
 
     return;
 }
@@ -349,4 +358,190 @@ void Graph<Data, Key>::bfs(Key source) const {
            u->color_white = false;
        }
    }
+}
+
+template <typename Data, typename Key>
+void Graph<Data, Key>::bfs_tree(Key s) const {
+    // Check if the starting vertex exists
+    if (get(s) == nullptr) {
+        return;
+    }
+
+    // Create a queue for BFS traversal
+    deque<Vertex<Data, Key>*> q;
+
+    // Create a set to keep track of visited vertices
+    unordered_set<Key> visited;
+
+    // Initialize a stringstream to store the result
+    stringstream result;
+
+    // Add the source vertex to the queue and mark it visited
+    q.push_back(get(s));
+    visited.insert(s);
+
+    // Traverse BFS
+    while (!q.empty()) {
+        // Get the number of vertices in the current level
+        int level_size = q.size();
+
+        // Initialize a stringstream to store vertices in the current level
+        stringstream current_level_str;
+
+        // Process all vertices in the current level
+        for (int i = 0; i < level_size; i++) {
+            // Get the front vertex from the queue
+            Vertex<Data, Key>* vertex = q.front();
+            q.pop_front();
+
+            // Append the key of the vertex to the current level string
+            current_level_str << (current_level_str.tellp() == 0 ? "" : " ") << vertex->key;
+
+            // Visit all adjacent vertices of the current vertex
+            for (auto neighbor : vertex->adjacencies_list) {
+                // Check if the neighbor vertex has not been visited
+                if (visited.count(neighbor->key) == 0) {
+                    // Mark the neighbor vertex as visited and add it to the queue
+                    q.push_back(neighbor);
+                    visited.insert(neighbor->key);
+                }
+            }
+        }
+
+        // Append the current level string to the result
+        // Only add a newline character if this is not the last level
+        if (!q.empty()) {
+            result << current_level_str.str() << "\n";
+        }
+        else {
+            result << current_level_str.str();
+        }
+    }
+
+    // Convert the stringstream to a string and return
+    cout << result.str();
+    return;
+}
+
+/**
+* @brief edge_class
+*
+* performs a depth-first search on Graph object, returning the edge class of edge (u,v)
+*
+* @param u_key, v_key
+*
+* @note Pre-Condition: u_key and v_key are valid keys of vertices in the Graph
+* @note Post-Condition: none, but returns the edge class of edge (u,v)
+*
+* @returns returns the edge class of edge (u,v)
+*/
+template <typename Data, typename Key>
+string Graph<Data, Key>::edge_class(Key u_key, Key v_key) const {
+    Vertex<Data,Key> *u = get( u_key ); // set pointers u and v from key parameters
+    Vertex<Data,Key> *v = get( v_key );
+
+    int len = vertices.size();
+    string ret = "no edge";
+
+    for( int i = 0; i < len; i++ ) { // set all colors to white and parents to null
+        vertices[i]->color = 0;
+        vertices[i]->parent = nullptr;
+    }
+
+    time_var = 0;
+
+    for( int j = 0; j < len; j++ ) { // for each vertex in vertices
+        if( vertices[j] == u ) { // if vertex equal to u
+            if( vertices[j]->color == 0 ) { // if white
+                ret = edge_class_helper( u, v, ret );
+            }
+            else { 
+                return "back edge";
+            }
+        }
+        else if( vertices[j]->color == 0 ) { // if vertex not equal to u
+            dfs_visit( vertices[j] );
+        }
+    }
+
+    return ret;
+}
+
+
+/**
+* @brief dfs-visit
+*
+* helper function for dfs
+*
+* @param Vertex u
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: changes attributes of vertices
+*
+* @returns none, but changes the attributes of the vertices
+*/
+template <typename Data, typename Key>
+void Graph<Data, Key>::dfs_visit( Vertex<Data,Key> *u ) const {
+    time_var = time_var + 1;
+    u->discovered = time_var;
+    u->color = 1;
+    int len = u->adjacencies_list.size();
+    
+    for( int i = 0; i < len; i++ ) { // for vertex in G.Adj[u]
+        if( u->adjacencies_list[i]->color == 0) {
+            u->adjacencies_list[i]->parent = u;
+            dfs_visit( u->adjacencies_list[i] );
+        }
+    }
+
+    u->color = 2;
+    time_var = time_var + 1;
+    u->finished = time_var;
+}
+
+
+/**
+* @brief edge_class_helper
+*
+* like dfs-visit, but returns class of edge (u,v)
+*
+* @param Vertex u, Vertex v, string ret
+*
+* @note Pre-Condition: graph is a valid graph
+* @note Post-Condition: changes attributes of Vertices, returns edge class
+*
+* @returns edge class string, and changes the attributes of the vertices
+*/
+template <typename Data, typename Key>
+string Graph<Data, Key>::edge_class_helper( Vertex<Data,Key> *u, Vertex<Data,Key> *v, string ret ) const {
+    time_var = time_var + 1;
+    u->discovered = time_var;
+    u->color = 1;
+    int len = u->adjacencies_list.size();
+    
+    for( int i = 0; i < len; i++ ) { // for vertex in G.Adj[u]
+        if ( u->adjacencies_list[i] == v ) { // if vertex = v 
+            if( u->adjacencies_list[i]->color == 0 ) // if white
+                return "tree edge";
+            if( u->adjacencies_list[i]->color == 1 ) { // if gray
+                return "back edge";
+            }
+            if( u->adjacencies_list[i]->color == 2 ) { // if black
+                if( u->discovered < u->adjacencies_list[i]->discovered ) // forward if u.distance < v.distance
+                    return "forward edge";
+                else 
+                    return "cross edge";
+            }
+        }
+        else if ( u->adjacencies_list[i]->color == 0 ) { // if vertex != v
+            u->adjacencies_list[i]->parent = u;
+            dfs_visit( u->adjacencies_list[i] );
+        }
+    }
+
+    u->color = 2;
+    time_var = time_var + 1;
+    u->finished = time_var;
+
+    return ret;
 }
